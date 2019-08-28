@@ -16,13 +16,13 @@
                     <img src="{{asset('img/foto.png')}}" alt="foto de perfil" class="img-thumbnail" width="270"> 
                     <form action="#" enctype="multipart/form-data" aria-label="Configuración de mi cuenta" >
                         @csrf
-                        <div class="form-group">
+                       {{--  <div class="form-group">
                             <label for="surname">Apellidos</label>
                             <input type="file" class="form-control" id="foto" >
-                        </div>
+                        </div> 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
+                        </div>--}}
                     </form>
                 </div>
                 <form method="POST" action="{{ route('user.update') }}" enctype="multipart/form-data" aria-label="Configuración de mi cuenta" class="col-xs-4">

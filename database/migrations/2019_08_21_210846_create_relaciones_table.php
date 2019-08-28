@@ -32,10 +32,12 @@ class CreateRelacionesTable extends Migration
         Schema::table('reporte', function (Blueprint $table) {
             $table->unsignedBigInteger('beneficiario_id');
             $table->unsignedBigInteger('partida_id');
+            $table->unsignedBigInteger('responsable_id');
             $table->unsignedBigInteger('user_id');
         
             $table->foreign('beneficiario_id')->references('id')->on('beneficiario');
             $table->foreign('partida_id')->references('id')->on('partida');
+            $table->foreign('responsable_id')->references('id')->on('responsable');
             $table->foreign('user_id')->references('id')->on('users');
         });
 
@@ -106,6 +108,15 @@ class CreateRelacionesTable extends Migration
                 'total'             => '160368.12'
             ],
         ]);
+        /* INSERT A TRABLA RESPONSABLES */
+        DB::table('responsable')->insert([
+            [
+                'dependencia'   => 'Secretaria de Obras Publicas',
+                'unidad'        => 'Oficina del Secretario de Obras Publicas', 
+                'num_proyecto'  => '060001',
+                'nombre'        => 'Nombre del proyecto'
+            ],
+        ]);
         /* INSERT A TRABLA REPORTE */
         DB::table('reporte')->insert([
             [
@@ -120,17 +131,13 @@ class CreateRelacionesTable extends Migration
                 'num_procedencia'   => '10', 
                 'nom_procedencia'   => 'Pagadora Ramo', 
                 'cuenta_bancaria'   => '70136245230 - Pagadora Ramo', 
-                'dependencia'       => 'Secretaria de Obras Publicas', 
-                'unidad'            => 'Oficina de Secretaria de Obras Publicas',
-                'proyecto'          => '060001',  
                 'beneficiario_id'   => '1',
-                'user_id'           => '1',
-                'partida_id'        => '1'
+                'partida_id'        => '1',
+                'responsable_id'    => '1', 
+                'user_id'           => '1'
             ],
         ]);  
-
-
-        
+                
     }
 
     public function down()
@@ -138,3 +145,5 @@ class CreateRelacionesTable extends Migration
         Schema::dropIfExists('relaciones');
     }
 }
+
+            

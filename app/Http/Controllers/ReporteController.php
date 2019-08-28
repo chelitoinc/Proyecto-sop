@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Reporte;
 use App\Beneficiario;
 use App\Crasificado;
+use App\Responsable;
+
 use Validator;
 
 
@@ -14,9 +16,17 @@ class ReporteController extends Controller
 
     public function index()
     {
-        $reportes = Reporte::orderBY('id','DESC')->get();
+       
+        $reportes = Reporte::query('reporte')
+            ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
+            ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
+            ->select('reporte.*', 'beneficiario.beneficiario', 'responsable.num_proyecto')
+            ->get();
+
+        
         $beneficiarios = Beneficiario::orderBY('id','DESC')->get();
         $crasificados = Crasificado::orderBY('id','DESC')->get();
+        $responsables = Responsable::orderBy('id', 'DESC')->get();
 
         if (request()->ajax()) {
             return datatables()->of($reportes)
@@ -37,7 +47,8 @@ class ReporteController extends Controller
         }
         return view('reportes.reportes',[
             'beneficiarios' => $beneficiarios,
-            'crasificados'  => $crasificados
+            'crasificados'  => $crasificados,
+            'responsables'  => $responsables
         ]);
     }
 
@@ -62,11 +73,9 @@ class ReporteController extends Controller
             'num_procedencia'   => 'required|integer',
             'nom_procedencia'   => 'required|string',
             'cuenta_bancaria'   => 'required|string',
-            'dependencia'       => 'required|string',
-            'unidad'            => 'required|string',
-            'proyecto'          => 'required|string',
             'beneficiario_id'   => 'required|integer',
-            'partida_id'        => 'required|integer'
+            'partida_id'        => 'required|integer',
+            'responsable_id'    => 'required|string',
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -87,11 +96,9 @@ class ReporteController extends Controller
             'num_procedencia'   => $request->num_procedencia,
             'nom_procedencia'   => $request->nom_procedencia,
             'cuenta_bancaria'   => $request->cuenta_bancaria,
-            'dependencia'       => $request->dependencia,
-            'unidad'            => $request->unidad,
-            'proyecto'          => $request->proyecto,
             'beneficiario_id'   => $request->beneficiario_id,
             'partida_id'        => $request->partida_id,
+            'responsable_id'    => $request->responsable_id,
             'user_id'           => $id
         );
 
@@ -130,11 +137,9 @@ class ReporteController extends Controller
             'num_procedencia'   => 'required|integer',
             'nom_procedencia'   => 'required|string',
             'cuenta_bancaria'   => 'required|string',
-            'dependencia'       => 'required|string',
-            'unidad'            => 'required|string',
-            'proyecto'          => 'required|string',
             'beneficiario_id'   => 'required|integer',
-            'partida_id'        => 'required|integer'
+            'partida_id'        => 'required|integer',
+            'responsable_id'    => 'required|string',
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -155,11 +160,9 @@ class ReporteController extends Controller
             'num_procedencia'   => $request->num_procedencia,
             'nom_procedencia'   => $request->nom_procedencia,
             'cuenta_bancaria'   => $request->cuenta_bancaria,
-            'dependencia'       => $request->dependencia,
-            'unidad'            => $request->unidad,
-            'proyecto'          => $request->proyecto,
             'beneficiario_id'   => $request->beneficiario_id,
             'partida_id'        => $request->partida_id,
+            'responsable_id'    => $request->responsable_id,
             'user_id'           => $id
         );
 

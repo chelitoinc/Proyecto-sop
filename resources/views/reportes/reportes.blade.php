@@ -25,14 +25,11 @@
                                 <table id="table_reportes" class="table table-hover text-center" >
                                     <thead>
                                         <tr role="row" class="bg bg-gray">
-                                            <th style="width: 10%">Clave</th>
-                                            <th style="width: 10%">Folio</th>
-                                            <th style="width: 10%">Codigo</th>
-                                            <th style="width: 15%">Beneficiario</th>
-                                            <th style="width: 15%">N° de Procedencia</th>
-                                            <th style="width: 20%">Cuenta Bancaria</th>
-                                            <th style="width: 10%">Fecha</th>
-                                            <th style="width: 10%">Monto</th>
+                                            <th style="width: 13%">Número de Folio</th>
+                                            <th style="width: 25%">Nombre del Proveedor</th>
+                                            <th style="width: 10%">Importe</th>
+                                            <th style="width: 15%">Proyecto</th>
+                                            <th style="width: 15%">Fecha</th>
                                             <th style="width: 10%">Acción</th> 
                                         </tr>
                                     </thead>
@@ -68,11 +65,12 @@
                                         <th>Numero de Folio</th>
                                         <th>Codigo</th>
                                         <th>Monto</th> 
+                                        <th>Fecha</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="3" style="text-align:right">Total:</th>
+                                        <th colspan="3" style="text-align:right">Total </th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -140,16 +138,13 @@
                                 <input name="cuenta_bancaria" id="cuenta_bancaria" class="form-control" type="text" placeholder="Cuenta Bancaria">
                             </div>
                             <div class="col-xs-4">
-                                <label for="dependencia" class="text-muted">Depedencia</label>
-                                <input name="dependencia" id="dependencia" class="form-control" type="text" placeholder="Depedencia">
-                            </div>
-                            <div class="col-xs-4">
-                                <label for="unidad" class="text-muted">Unidad</label>
-                                <input name="unidad" id="unidad" class="form-control" type="text" placeholder="Unidad">
-                            </div>
-                            <div class="col-xs-4">
-                                <label for="proyecto" class="text-muted">Proyecto</label>
-                                <input name="proyecto" id="proyecto" class="form-control" type="text" placeholder="Proyecto">
+                                <label for="responsable_id" class="text-muted">Proyecto</label>
+                                <select name="responsable_id" id="responsable_id" class="form-control">
+                                    <option>Selecciona</option>
+                                    @foreach ($responsables as $responsable)
+                                        <option value="{{ $responsable->id }}">{{ $responsable->num_proyecto }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-xs-4">
                                 <label for="beneficiario_id" class="text-muted">Beneficiario</label>
@@ -214,14 +209,11 @@
             "serverSide": true,
             "ajax": "{{ route('reportes.index') }}",
             "columns":[
-                { "data": "partida_id" },
-                { "data": "num_folio" },
-                { "data": "codigo" },
-                { "data": "beneficiario_id" },
-                { "data": "num_procedencia" },
-                { "data": "cuenta_bancaria" },
-                { "data": "fecha" },
-                { "data": "importe" },
+                { "data": "num_folio" }, /* Numero de folio */
+                { "data": "beneficiario" }, /* Nombre beneficiario */
+                { "data": "importe" }, /* Importe */
+                { "data": "num_proyecto"}, /* Proyecto */
+                { "data": "fecha" }, /* Fecha */
                 { "data": "action"}
             ]
         });/* Fin Script */
@@ -256,7 +248,7 @@
     
                 // Update footer
                 $( api.column( 3 ).footer() ).html(
-                    ' ( $'+ total +' total)'
+                    '$'+ total
                 );
             },
             "processing": true,
@@ -267,7 +259,8 @@
                 { "data": "id" },
                 { "data": "num_folio" },
                 { "data": "codigo" },
-                { "data": "importe" }
+                { "data": "importe" },
+                { "data": "fecha"},
             ]
         });/* Fin Script */
 
@@ -365,9 +358,7 @@
                     $('#num_procedencia').val(html.data.num_procedencia);
                     $('#nom_procedencia').val(html.data.nom_procedencia);
                     $('#cuenta_bancaria').val(html.data.cuenta_bancaria);
-                    $('#dependencia').val(html.data.dependencia);
-                    $('#unidad').val(html.data.unidad);
-                    $('#proyecto').val(html.data.proyecto);
+                    $('#responsable_id').val(html.data.responsable_id);
                     $('#beneficiario_id').val(html.data.beneficiario_id);
                     $('#partida_id').val(html.data.partida_id);
                     $('#hidden_id').val(html.data.id);
@@ -416,3 +407,4 @@
 </script>
 
 @stop
+

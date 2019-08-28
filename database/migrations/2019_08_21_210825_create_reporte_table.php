@@ -6,11 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateReporteTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('reporte', function (Blueprint $table) {
@@ -27,20 +23,25 @@ class CreateReporteTable extends Migration
             $table->integer('num_procedencia');
             $table->string('nom_procedencia');
             $table->string('cuenta_bancaria');
-            $table->string('dependencia');
-            $table->string('unidad');
-            $table->string('proyecto');
             $table->timestamps();
         });
+
+        Schema::create('responsable', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->string('dependencia');
+            $table->string('unidad');
+            $table->string('num_proyecto');
+            $table->string('nombre');
+            $table->timestamps();
+        });
+
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('reporte');
     }
 }
+
+

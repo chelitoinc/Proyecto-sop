@@ -29,7 +29,7 @@
 <div class="col-md-12">
     <div class="box box-default box-solid collapsed-box">
         <div class="box-header with-border">
-            <h3 class="box-title">Cargar Clasificados</h3>
+            <h3 class="box-title">Cargar Responsables</h3>
 
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -42,8 +42,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Descargar en diferentes documentos</h5>
-                    <a href="{{ url('/clasificados/downloadClasificados/xlsx') }}"><button class="btn btn-dark">Descargar Excel xlsx</button></a>
-                    <a href="{{ url('/clasificados/downloadClasificados/xls') }}"><button class="btn btn-success">Descargar Excel xls</button></a>
+                    <a href="{{ url('/clasificados/downloadResponsables/xlsx') }}"><button class="btn btn-dark">Descargar Excel xlsx</button></a>
                     <a href="{{ url('/clasificados/downdoaldPlantilla/xlsx') }}"><button class="btn btn-warning">Descargar Prantilla</button></a>
 
                     <form  action="{{ url('clasificados/importData') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
@@ -64,12 +63,12 @@
     <div class="col-xs-12">
         <div class="box box-default">
             <div class="box-header">
-                <h2 class="box-title">Clasificados</h2>
+                <h2 class="box-title">Responsables</h2>
             </div>
             <!--Boton para abrir el modal -->
             <div class="col-xs-2">
                 <button type="button" name="create_button" id="create_button" class="btn btn-success btn-sm">
-                    <strong>Agregar Clasificado</strong>
+                    <strong>Agregar Responsable</strong>
                 </button>
             </div>
             <!-- Tabla Clasificado-->
@@ -79,14 +78,15 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="box-body table-responsive no-padding">
-                                <table id="table_clasificado" class="table table-hover" >
+                                <table id="table_responsables" class="text-center table table-hover" >
                                     <thead>
-                                        <tr role="row" class="bg bg-gray">
+                                        <tr role="row" class="text-center bg bg-gray">
                                             {{-- <th style="width: 25%">Foto</th> --}}
-                                            <th style="width: 2%">Clave</th>
-                                            <th style="width: 20%">Nombre</th>
-                                            <th style="width: 70%">Descripción</th>
-                                            <th style="width: 40px">Acción</th> 
+                                            <th style="width: 15%">Dependencia</th>
+                                            <th style="width: 20%">Unidad Administrativa</th>
+                                            <th style="width: 15%">Numero de Proyecto</th>
+                                            <th style="width: 35%">Nombre de Proyecto</th>
+                                            <th style="width: 10px">Acción</th> 
                                         </tr>
                                     </thead>
                                 </table>
@@ -106,7 +106,7 @@
         <div class="modal-content">
             <div class="modal-header bg bg-blue">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Agregar Clasificados</h4>
+                <h4 class="modal-title">Agregar Responsable</h4>
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
@@ -114,37 +114,30 @@
                     @csrf
                     <div class="well well-sm">
                         <div class="row">
-                            <div class="col-xs-4">
-                                <p>Clave</p>
-                                <input name="codigo_p" id="codigo_p" class="form-control" type="text" placeholder="Codigo"/>
-                            </div>
-                            <div class="col-xs-8">
-                                <p>Nombre</p>
-                                <input name="nombre_p" id="nombre_p" class="form-control" type="text" placeholder="Nombre"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="well well-sm">
-                        <div class="row">
                             <div class="col-xs-12">
-                                <p>Descripción</p>
-                                <textarea name="descripcion_p" id="descripcion_p" class="form-control" rows="2" placeholder="Descripción ..." ></textarea>
+                                <p>Dependencia</p>
+                                <input name="dependencia" id="dependencia" class="form-control" type="text" value="Secretaría de Obras Públicas" readonly/>
                             </div>
+                            <div class="col-xs-12">
+                                <p>Unidad</p>
+                                <input name="unidad" id="unidad" class="form-control" type="text" placeholder="Unidad"/>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="well well-sm">
-                        <div class="row">
+                            <div class="col-xs-12">
+                                <p>Numero de Proyecto</p>
+                                <input name="num_proyecto" id="num_proyecto" class="form-control" placeholder="Numero de proyecto" >
+                            </div>
+                            <div class="col-xs-12">
+                                <p>Nombre</p>
+                                <input name="nombre" id="nombre" class="form-control" placeholder="Nombre" >
+                            </div>
                             <div class="col-xs-6">
+                                <br>
                                 <input type="hidden" name="action" id="action" />
                                 <input type="hidden" name="hidden_id" id="hidden_id" />
                                 <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Agregar" />
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -172,28 +165,27 @@
 </div>
 <!-- Modal Fin -->
 
-<!-- TABLA Clasificado -->
 <script type="text/javascript">
     $(document).ready(function() {
 
-        /* Consulta AJAX tabla Users */
-        $('#table_clasificado').DataTable({
+        /* Table Responsables */
+        $('#table_responsables').DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "{{ route('clasificados.index') }}",
+            "ajax": "{{ route('responsables.index') }}",
             "columns":[
-                { "data": "codigo_p" },
-                { "data": "nombre_p" },
-                { "data": "descripcion_p" },
+                { "data": "dependencia" },
+                { "data": "unidad" },
+                { "data": "num_proyecto" },
+                { "data": "nombre"},
                 { "data": "action" }
             ]
-        });
-        /* Fin script */
+        });/* Fin script */
 
         /* Abrir ventana modal */
         $('#create_button').click(function(){
             $('#sample_form')[0].reset();
-            $('.modal-title').text("Agregar Clasificado");
+            $('.modal-title').text("Agregar Responsable");
             $('#action_button').val("Agregar");
             $('#action').val("Agregar");
             $('#formModal').modal('show');
@@ -205,7 +197,7 @@
 
             if($('#action').val() == 'Agregar'){
                 $.ajax({
-                    url:"{{route('clasificados.store')}}",
+                    url:"{{route('responsables.store')}}",
                     method:"POST",
                     data:new FormData(this),
                     contentType: false,
@@ -226,18 +218,18 @@
                         if(data.success){
                             html = '<div class="alert alert-success alert-dismissible">' + data.success;
                             html += '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-                            html += '<h4><i class="icon fa fa-check"></i> Clasificado almacenado</h4></div>';
+                            html += '<h4><i class="icon fa fa-check"></i> Responsable almacenado</h4></div>';
                             $('#sample_form')[0].reset();
-                            $('#table_clasificado').DataTable().ajax.reload();
+                            $('#table_responsables').DataTable().ajax.reload();
                         }
                         $('#form_result').html(html);
                     }
                 })
             }
 
-            if($('#action').val() == "Editar"){
+            if($('#action_button').val() == "Editar"){
                 $.ajax({
-                    url:"{{ route('clasificados.update') }}",
+                    url:"{{ route('responsables.update') }}",
                     method:"POST",
                     data:new FormData(this),
                     contentType: false,
@@ -256,7 +248,7 @@
                         if(data.success){
                             html = '<div class="alert alert-success">' + data.success + '</div>';
                             $('#sample_form')[0].reset();
-                            $('#table_clasificado').DataTable().ajax.reload();
+                            $('#table_responsables').DataTable().ajax.reload();
                         }
                         $('#form_result').html(html);
                     }
@@ -269,14 +261,15 @@
             var id = $(this).attr('id');
             $('#form_result').html('');
             $.ajax({
-                url:"/clasificados/"+id+"/edit",
+                url:"/responsables/"+id+"/edit",
                 dataType:"json",
                 success:function(html){
-                    $('#codigo_p').val(html.data.codigo_p);
-                    $('#nombre_p').val(html.data.nombre_p);
-                    $('#descripcion_p').val(html.data.descripcion_p);
+                    $('#dependencia').val(html.data.dependencia);
+                    $('#unidad').val(html.data.unidad);
+                    $('#num_proyecto').val(html.data.num_proyecto);
+                    $('#nombre').val(html.data.nombre);
                     $('#hidden_id').val(html.data.id);
-                    $('.modal-title').text("Editar crasificado");
+                    $('.modal-title').text("Editar Responsable");
                     $('#action_button').val("Editar");
                     $('#action').val("Editar");
                     $('#formModal').modal('show');
@@ -293,15 +286,15 @@
 
         $('#ok_button').click(function(){
             $.ajax({
-                url:"clasificados/destroy/"+crasificado_id,
+                url:"responsables/destroy/"+crasificado_id,
                 beforeSend:function(){
-                    $('.modal-titlee').text("Eliminar Crasificado");
+                    $('.modal-titlee').text("Eliminar Responsable");
                     $('#ok_button').text('Eliminando...');
                 },
                 success:function(data){
                     setTimeout(function(){
                     $('#confirmModal').modal('hide');
-                    $('#table_clasificado').DataTable().ajax.reload();
+                    $('#table_responsables').DataTable().ajax.reload();
                     $('#ok_button').text('OK');
                     }, 2000);
                 }

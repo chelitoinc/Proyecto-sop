@@ -47,6 +47,14 @@ Route::get('clasificados/downloadClasificados/{type}', 'ClasificadoController@do
 Route::get('clasificados/downdoaldPlantilla/{type}', 'ClasificadoController@downdoaldPlantilla');
 Route::post('clasificados/importData', 'ClasificadoController@importClasificados');
 
+/* RUTAS CLASIFICADOS */
+Route::resource('responsables', 'ResponsableController');
+Route::post('responsables/update', 'ResponsableController@update')->name('responsables.update');
+Route::get('responsables/destroy/{id}', 'ResponsableController@destroy');
+Route::get('clasificados/downloadResponsables/{type}', 'ResponsableController@downloadResponsables');
+Route::get('clasificados/downdoaldPlantilla/{type}', 'ResponsableController@downdoaldPlantilla');
+Route::post('clasificados/importData', 'ResponsableController@importResponsables');
+
 /* RUTA PLANTILLAS PDF */
 //Route::get('plantillas', 'PlantillaController');
 Route::resource('plantillas', 'PlantillaController');

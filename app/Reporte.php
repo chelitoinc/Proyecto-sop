@@ -20,11 +20,9 @@ class Reporte extends Model
         'num_procedencia',
         'nom_procedencia',
         'cuenta_bancaria',
-        'dependencia',
-        'unidad',
-        'proyecto',
         'beneficiario_id',
         'partida_id',
+        'responsable_id',
         'user_id'
     ];
 
@@ -41,9 +39,6 @@ class Reporte extends Model
         return $this->hasOne('App\Users');
     }
 
-    public function usuario()
-    {
-        return $this->hasOne('App\Users');
-    }
+    
 
 }

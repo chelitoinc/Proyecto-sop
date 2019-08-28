@@ -141,6 +141,11 @@ return [
                     'text'    => 'Clasificados',
                     'url'     => '/clasificados',
                     'icon'   => 'creative-commons'
+                ],
+                [
+                    'text'    => 'Responsables',
+                    'url'     => '/responsables',
+                    'icon'    => 'registered'  
                 ]
             ],
         ],
@@ -158,6 +163,7 @@ return [
                     'url'     => '/beneficiario',
                     'icon'    => 'truck'
                 ],
+                
             ],
         ],
         [
