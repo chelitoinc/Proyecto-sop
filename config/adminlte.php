@@ -167,7 +167,7 @@ return [
             ],
         ],
         [
-            'text'    => 'Reportes',
+            'text'    => 'Tramite',
             'icon'    => 'table',
             'submenu' => [
                 [
@@ -179,11 +179,6 @@ return [
                     'text'    => 'Plantillas',
                     'url'     => '/plantillas',
                     'icon'    => 'area-chart'
-                ],
-                [
-                    'text' => 'Reportes provedores',
-                    'url'  => '#',
-                    'icon' => 'line-chart'
                 ],
             ],
         ],

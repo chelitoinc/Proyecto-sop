@@ -9,7 +9,7 @@ class PlantillaController extends Controller
 {
     public function index()
     {
-        $reportes = Reporte::orderBy('id', 'asc')->get();
+        $reportes = Reporte::orderBy('id', 'asc')->where('id',2)->get();
         return view('plantillas.plantilla',[
             'reportes' => $reportes
         ]);

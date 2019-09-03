@@ -22,12 +22,13 @@ Route::resource('partidas', 'PartidaController');
 Route::get('importPartidas', 'PartidaController@partidaView');
 Route::get('importPartida', 'PartidaController@partidasView');
 Route::post('partidas/update', 'PartidaController@update')->name('partidas.update');
+Route::post('partidas/change', 'PartidaController@change')->name('partidas.change');
 Route::get('partidas/destroy/{id}', 'PartidaController@destroy');
 Route::get('partidas/downloadPartida/{type}', 'PartidaController@downloadPartida');
 Route::get('partidas/downloadPlantilla/{type}', 'PartidaController@downloadPlantilla');
 Route::post('partidas/importData', 'PartidaController@importPartida');
 
-Route::get('partidas/empty','PartidaController@empty');
+Route::get('partidas/empty','PartidaController@empty')->name('partidas.empty');
 
 /* RUTAS TRAMITE */
 Route::resource('reportes', 'ReporteController');

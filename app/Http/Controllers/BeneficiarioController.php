@@ -153,7 +153,8 @@ class BeneficiarioController extends Controller{
     }
 
     public function destroy($id){
+        
         $data = Beneficiario::findOrFail($id);
-        $data->delete();
+        $data->delete(); 
     }
 }

@@ -26,6 +26,9 @@ class PartidaController extends Controller
                     $button .= '&nbsp;&nbsp;';
                     $button .= '<a style="cursor:pointer"name="delete" id="' . $data->id . '"
                     class="delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
+                    $button .= '&nbsp;&nbsp;&nbsp;';
+                    $button .= '<a style="cursor:pointer"name="change" id="' . $data->id . '"
+                    class="change"><i class="fa fa-exchange" aria-hidden="true"></i></a> ';
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -61,15 +64,13 @@ class PartidaController extends Controller
             'marzo'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'abril'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'mayo'              => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'acumulado'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'junio'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'julio'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'agosto'            => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'septiembre'        => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'octubre'           => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'noviembre'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'diciembre'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'total'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'diciembre'         => 'required|regex:/^\d+(\.\d{1,2})?$/'
             
         );
 
@@ -78,7 +79,9 @@ class PartidaController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        
+        $acumulado = $request->enero + $request->febrero + $request->marzo + $request->abril + $request->mayo;
+        $total = $acumulado + $request->junio + $request->julio + $request->agosto + $request->septiembre
+                + $request->octubre + $request->noviembre + $request->diciembre;
         $form_data = array(
             'urg'              => $request->urg,
             'cuenta'           => $request->cuenta,
@@ -88,7 +91,7 @@ class PartidaController extends Controller
             'marzo'            => $request->marzo,
             'abril'            => $request->abril,
             'mayo'             => $request->mayo,
-            'acumulado'        => $request->acumulado,
+            'acumulado'        => $acumulado,
             'junio'            => $request->junio,
             'julio'            => $request->julio,
             'agosto'           => $request->agosto,
@@ -96,7 +99,7 @@ class PartidaController extends Controller
             'octubre'          => $request->octubre,
             'noviembre'        => $request->noviembre,
             'diciembre'        => $request->diciembre,
-            'total'            => $request->total,
+            'total'            => $total,
             'created_at'       => $date,
             'user_id'          => $id
         );
@@ -135,15 +138,13 @@ class PartidaController extends Controller
             'marzo'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'abril'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'mayo'              => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'acumulado'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'junio'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'julio'             => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'agosto'            => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'septiembre'        => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'octubre'           => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'noviembre'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'diciembre'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'total'             => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            'diciembre'         => 'required|regex:/^\d+(\.\d{1,2})?$/'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -152,6 +153,9 @@ class PartidaController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
         
+        $acumulado = $request->enero + $request->febrero + $request->marzo + $request->abril + $request->mayo;
+        $total = $acumulado + $request->junio + $request->julio + $request->agosto + $request->septiembre
+                + $request->octubre + $request->noviembre + $request->diciembre;
         $form_data = array(
             'urg'              => $request->urg,
             'cuenta'           => $request->cuenta,
@@ -161,7 +165,7 @@ class PartidaController extends Controller
             'marzo'            => $request->marzo,
             'abril'            => $request->abril,
             'mayo'             => $request->mayo,
-            'acumulado'        => $request->acumulado,
+            'acumulado'        => $acumulado,
             'junio'            => $request->junio,
             'julio'            => $request->julio,
             'agosto'           => $request->agosto,
@@ -169,7 +173,7 @@ class PartidaController extends Controller
             'octubre'          => $request->octubre,
             'noviembre'        => $request->noviembre,
             'diciembre'        => $request->diciembre,
-            'total'            => $request->total,
+            'total'            => $total,
             'created_at'       => $date,
             'user_id'          => $id
         );
@@ -186,12 +190,8 @@ class PartidaController extends Controller
     }
 
     public function empty(){
-
-        $user = \Auth::user();
-        $id = $user->id;
     
-        $data = Partida::table('partidas_urg');
-        $data->delete()->where('user_id','=',$id);
+        Partida::table('partidas_urg')->delete();
 
     }
 
@@ -283,6 +283,40 @@ class PartidaController extends Controller
         }
 
         return back()->with('success', 'Datos importados correctamente.');
+    }
+
+    public function change(Request $request){
+
+        /* Se hace la validacion de los comapos del formulario */
+        $rules = array(
+            'partida'   => 'required|integer|min:4',
+            'urge'      => 'required|integer|min:4',
+            'mes'       => 'required|string|max:255',
+            'monto'     => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'destino'   => 'required|integer',
+            'mes2'      => 'required|string',
+            'monto2'    => 'required|regex:/^\d+(\.\d{1,2})?$/'
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        if ($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
+        $partida   = $request->partida;
+        $urge      = $request->urge;
+        $mes       = $request->mes;
+        $monto     = $request->monto;
+        $destino   = $request->destino;
+        $mes2      = $request->mes2;
+        $monto2    = $request->monto2;
+
+        /*Partida::whereId($request->hidden_id)->update($form_data); */
+        Partida::table('partidas_urg')->decrement($mes, $menosmonto)->where('id',$origen);
+        Partida::table('partidas_urg')->increment($mes2, $masmonto)->where('id', $destino);
+
+        return response()->json(['success' => 'Transferencia concretada con exito.']);
     }
        
 }

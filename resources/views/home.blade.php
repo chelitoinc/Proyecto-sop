@@ -10,45 +10,35 @@
 
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+      <span class="info-box-icon bg-aqua"><i class="fa fa-file-text-o"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Movimientos</span>
-      <span class="info-box-number">Sin datos</span>
+        <span class="info-box-text">Reportes</span>
+      <span class="info-box-number">{{ App\Reporte::all()->count() }}</span>
       </div>
-      <!-- /.info-box-content -->
     </div>
-    <!-- /.info-box -->
   </div>
 
-  <!-- /.col -->
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-red"><i class="fa fa-balance-scale"></i></span>
+      <span class="info-box-icon bg-red"><i class="fa fa-truck"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Ventas</span>
-        <span class="info-box-number">Sin datos</span>
+        <span class="info-box-text">Proveedores</span>
+        <span class="info-box-number">{{ App\Beneficiario::all()->count() }}</span>
       </div>
-      <!-- /.info-box-content -->
     </div>
-    <!-- /.info-box -->
   </div>
-  <!-- /.col -->
 
-  <!-- fix for small devices only -->
   <div class="clearfix visible-sm-block"></div>
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+      <span class="info-box-icon bg-green"><i class="fa fa-list-alt"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Compras</span>
-        <span class="info-box-number">Sin datos</span>
+        <span class="info-box-text">MELP</span>
+        <span class="info-box-number">{{ App\Partida::all()->count() }}</span>
       </div>
-      <!-- /.info-box-content -->
     </div>
-    <!-- /.info-box -->
   </div>
 
-  <!-- /.col -->
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
       <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>

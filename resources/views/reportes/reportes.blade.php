@@ -202,7 +202,6 @@
 <script type="text/javascript">
     
     $(document).ready(function() {
-
         /* Consulta Ajax Tabla Reportes */
         $('#table_reportes').DataTable({
             "processing": true,
@@ -211,7 +210,7 @@
             "columns":[
                 { "data": "num_folio" }, /* Numero de folio */
                 { "data": "beneficiario" }, /* Nombre beneficiario */
-                { "data": "importe" }, /* Importe */
+                { "data": "importe", "render": $.fn.dataTable.render.number( ',', '.', 2, '$' ) }, /* Importe */
                 { "data": "num_proyecto"}, /* Proyecto */
                 { "data": "fecha" }, /* Fecha */
                 { "data": "action"}
@@ -248,7 +247,7 @@
     
                 // Update footer
                 $( api.column( 3 ).footer() ).html(
-                    '$'+ total
+                    '$'+ total 
                 );
             },
             "processing": true,
@@ -259,7 +258,7 @@
                 { "data": "id" },
                 { "data": "num_folio" },
                 { "data": "codigo" },
-                { "data": "importe" },
+                { "data": "importe","render": $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
                 { "data": "fecha"},
             ]
         });/* Fin Script */

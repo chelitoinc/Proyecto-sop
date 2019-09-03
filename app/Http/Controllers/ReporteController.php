@@ -21,6 +21,7 @@ class ReporteController extends Controller
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
             ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
             ->select('reporte.*', 'beneficiario.beneficiario', 'responsable.num_proyecto')
+            ->orderBy('id', 'ASC')
             ->get();
 
         

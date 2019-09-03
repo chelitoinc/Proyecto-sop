@@ -8,12 +8,12 @@
     <div class="col-xs-12">
         <div class="box box-default">
             <div class="box-header">
-                <h2 class="box-title">Provedores</h2>
+                <h2 class="box-title">Proveedores</h2>
             </div>
             <!--Boton para abrir el modal -->
             <div class="col-xs-2">
                 <button type="button" name="create_button" id="create_button" class="btn btn-success btn-sm">
-                    <strong>Agregar Provedor</strong>
+                    <strong>Agregar Proveedor</strong>
                 </button>
             </div>
             <!-- Tabla beneficiario-->
@@ -52,7 +52,7 @@
         <div class="modal-content">
             <div class="modal-header bg bg-blue">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Agregar provedor</h4>
+                <h4 class="modal-title">Agregar Proveedor</h4>
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
@@ -60,68 +60,66 @@
                     @csrf
                     <div class="well well-sm">
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
+                                <label for="num_beneficiario">N° de Proveedor</label>
                                 <input name="num_beneficiario" id="num_beneficiario" class="form-control typeahead" type="text" placeholder="N°"/>
                             </div>
-                            <div class="col-xs-5">
-                                <input name="beneficiario" id="beneficiario" class="form-control" type="text" placeholder="Nombre Beneficiario"/>
+                            <div class="col-xs-9">
+                                <label for="proveedor">Nombre del proveedor</label>
+                                <input name="beneficiario" id="beneficiario" class="form-control" type="text" placeholder="Nombre del Proveedor"/>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
+                                <label for="titutlar">Titular</label>
                                 <input name="titular" id="titular" class="form-control" type="text" placeholder="Titular"/>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="well well-sm">
-                        <div class="row">
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
+                                <label for="enlace">Enlace</label>
                                 <input name="enlace" id="enlace" class="form-control" type="text" placeholder="Enlace"/>
                             </div>
                             <div class="col-xs-4">
+                                <label for="rfc">RFC</label>
                                 <input name="rfc" id="rfc" class="form-control" type="text" placeholder="RFC"/>
                             </div>
-                            <div class="col-xs-3">
+                            <div class="col-xs-5">
+                                <label for="giro">Giro</label>
                                 <div class="input-group">
                                     <input name="giro" id="giro" class="form-control" type="text" placeholder="Giro"/>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="well well-sm">
-                        <div class="row">
-                            <div class="col-xs-5">
+                            <div class="col-xs-3">
+                                <label for="telefono">Telefono</label>
                                 <input name="telefono" id="telefono" class="form-control" type="text" placeholder="Telefono"/>
                             </div>
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
+                                <label for="email">Email</label>
                                 <input name="email" id="email" class="form-control" type="email" placeholder="Email"/>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="well well-sm">
-                        <div class="row">
-                            <div class="col-xs-9">
+                            <div class="col-xs-6">
+                                <label for="direccion">Dirección</label>
                                 <input name="direccion" id="direccion" class="form-control" type="text" placeholder="Dirección"/>
                             </div>
-                            <div class="col-xs-3">
+                            <div class="col-xs-4">
+                                <label for="cp">CP</label>
                                 <input name="cp" id="cp" class="form-control" type="text" placeholder="CP"/>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="well well-sm">
-                        <div class="row">
                             <div class="col-xs-4">
+                                <label for="ciudad">Ciudad</label>
                                 <input name="ciudad" id="ciudad" class="form-control" type="text" placeholder="Ciudad"/>
                             </div>
                             <div class="col-xs-4">
-                                <input name="pais" id="pais" class="form-control" type="text" placeholder="Pais"/>
+                                <label for="pais">Pais</label>
+                                <input name="pais" id="pais" class="form-control" type="text" value="México" placeholder="Pais" readonly/>
                             </div>
                             <div class="col-xs-4 ">
-                                <input name="tipo" id="tipo" class="form-control" type="text" value="Provedor" readonly>
+                                <label for="tipo">Tipo</label>
+                                <input name="tipo" id="tipo" class="form-control" type="text" value="Proveedor" readonly>
                             </div>
-                            <div class="col-xs-12">*
+                            <div class="col-xs-8">
+                                <label for="observaciones">Observaciones</label>
                                 <textarea name="observaciones" id="observaciones" class="form-control" rows="2" placeholder="Observaciones ..." ></textarea>
                             </div>
                         </div>

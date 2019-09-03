@@ -14,13 +14,13 @@ class CreateRelacionesTable extends Migration
         Schema::table('beneficiario', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
         
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
         /* RELACIONES ENTRE PARTIDAS Y USUARIOS */
         Schema::table('partida', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
         
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
         /* RELACIONES ENTRE PARTIDAS_URG Y USUARIOS */
         Schema::table('partidas_urg', function (Blueprint $table) {
@@ -59,10 +59,10 @@ class CreateRelacionesTable extends Migration
             [
                 'user_id'           => '1',
                 'num_beneficiario'  => '1', 
-                'beneficiario'      => 'Marisol Nava', 
+                'beneficiario'      => 'Marisol ', 
                 'titular'           => 'Mi titular', 
                 'enlace'            => 'Mi enlace', 
-                'rfc'               => 'PATA9510933JHBSD', 
+                'rfc'               => 'MARI9510933JHBSD', 
                 'giro'              => 'Mi giro', 
                 'telefono'          => '7312171652', 
                 'email'             => 'beneficiario@beneficiario.com', 
