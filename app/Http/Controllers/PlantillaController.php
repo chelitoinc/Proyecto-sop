@@ -9,7 +9,23 @@ class PlantillaController extends Controller
 {
     public function index()
     {
-        $reportes = Reporte::orderBy('id', 'asc')->where('id',2)->get();
+        $reportes = Reporte::query('reporte')
+            ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
+            ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
+            ->select('reporte.*', 
+                                'beneficiario.beneficiario', 
+                                'beneficiario.rfc',
+                                'beneficiario.num_beneficiario',
+                                'beneficiario.tipo',
+                                'responsable.num_proyecto',
+                                'responsable.dependencia',
+                                'responsable.unidad'
+                    )
+            ->where('reporte.id',2)
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        //$reportes = Reporte::orderBy('id', 'asc')->where('id',2)->get();
         return view('plantillas.plantilla',[
             'reportes' => $reportes
         ]);

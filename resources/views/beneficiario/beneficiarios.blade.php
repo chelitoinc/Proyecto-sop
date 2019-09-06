@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-xs-4 ">
                                 <label for="tipo">Tipo</label>
-                                <input name="tipo" id="tipo" class="form-control" type="text" value="Proveedor" readonly>
+                                <input name="tipo" id="tipo" class="form-control" type="text" value="PROVEEDOR" readonly>
                             </div>
                             <div class="col-xs-8">
                                 <label for="observaciones">Observaciones</label>

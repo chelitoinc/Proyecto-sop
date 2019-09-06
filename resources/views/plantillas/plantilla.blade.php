@@ -28,30 +28,30 @@
 			</div><br>
 			<div class="border1">
 				<div>
-					NOMBRE DEL BENEFICIARIO: <input type="text" value="{{ $reporte->beneficiario_id }}" class="beneficiario">
+					NOMBRE DEL BENEFICIARIO: <input type="text" value="{{ $reporte->beneficiario }}" class="beneficiario">
 				</div>
 				<div>
-					RFC: <input type="text" class="rfc" value="{{ $reporte->beneficiario_id }}">
-					N° BENEFICIARIO: <input class="numbene" type="text" value="{{ $reporte->beneficiario_id }}">
+					RFC: <input type="text" class="rfc" value="{{ $reporte->rfc }}">
+					N° BENEFICIARIO: <input class="numbene" type="text" value="{{ $reporte->num_beneficiario }}">
 				</div>
 				<div>
-					TIPO DE BENEFICIARIO: <input type="text" value="{{ $reporte->beneficiario_id }}" class="tipo">
+					TIPO DE BENEFICIARIO: <input type="text" value="{{ $reporte->tipo }}" class="tipo">
 				</div>
 				<div>CONCEPTO: <input  class="concepto" value="{{ $reporte->concepto }}" readonly></div>
 				<div>
-					NUM DE PRECEDENCIA: <input type="text" class="num" value="{{ $reporte->beneficiario_id }}">
-					NOMBRE DE LA DEPENDENCIA <input type="text" class="nombre" value="{{ $reporte->beneficiario_id }}">
+					NUM DE PRECEDENCIA: <input type="text" class="num" value="{{ $reporte->num_procedencia }}">
+					NOMBRE DE LA DEPENDENCIA <input type="text" class="nombre" value="{{ $reporte->nom_procedencia }}">
 				</div>
-				<div>CUENTA BANCARIA DE CARGO: <input type="text" class="cuenta" value="{{ $reporte->beneficiario_id }}"></div>
+				<div>CUENTA BANCARIA DE CARGO: <input type="text" class="cuenta" value="{{ $reporte->cuenta_bancaria }}"></div>
 			</div>
 			<br>
 			<div class="border2">
 				<center><p><strong>RESPONSABLE DEL TRÁMITE</strong></p></center>	
 				<div>	
-					DEPENDENCIA: <input type="text" value="{{ $reporte->fecha }}" class="dependencia"> 
+					DEPENDENCIA: <input type="text" value="{{ $reporte->dependencia }}" class="dependencia"> 
 				</div>
 				<div>	
-					UNIDAD: <input type="text" value="{{ $reporte->periodo }}" class="unidad">
+					UNIDAD: <input type="text" value="{{ $reporte->unidad }}" class="unidad">
 				</div>
 			</div><br>
 			<table border="1">
@@ -67,9 +67,9 @@
 				</thead>
 				<tbody>
 					<tr>      
-						<td>{{ $reporte->id }}</td>
+						<td>{{ $reporte->dependencia }}</td>
 						<td>{{ $reporte->num_folio }}</td>
-						<td>{{ $reporte->codigo }}</td>
+						<td>{{ $reporte->num_proyecto }}</td>
 						<td>{{ $reporte->importe }}</td>
 						<td>{{ $reporte->importe }}</td>
 						<td>{{ $reporte->importe }}</td>
