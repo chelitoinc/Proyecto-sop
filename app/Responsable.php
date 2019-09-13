@@ -9,11 +9,12 @@ class Responsable extends Model
     protected $table = "responsable";
 
     protected $fillable = [
-
+        'num_dependencia',
         'dependencia',
+        'num_unidad',
         'unidad',
         'num_proyecto',
-        'nombre',
+        'nombre'
     ];
 
    /*  public function Reporte() {

@@ -29,7 +29,9 @@ class CreateReporteTable extends Migration
         Schema::create('responsable', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
+            $table->integer('num_dependencia');
             $table->string('dependencia');
+            $table->integer('num_unidad');
             $table->string('unidad');
             $table->string('num_proyecto');
             $table->string('nombre');

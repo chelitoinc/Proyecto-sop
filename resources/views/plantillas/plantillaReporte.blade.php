@@ -11,47 +11,47 @@
 			<h2>GOBIERNO DEL ESTADO DE MORELOS</h2>
 			<p>SOLICITUD DE LIBERACIÓN DE RECURSOS <br>GASTO CORRIENTE</p>
 			<div id="company" class="clearfix">
-				<div>FOLIO: <span class="folio">{{ $reporte->num_folio }}</span></div>
-				<div>CODIGO:{{ $reporte->codigo }}</div>   
+				<div>FOLIO: <input type="text" value="sin datos" class="folio"></div>
+				<div>CODIGO:<input type="text" value="sin datos" class="codigo"></div>
 			</div>
 		</header>
 		<main>
 			<br>
 			<div class="border">
 				<div>
-					FECHA: <span class="fecha">{{ $reporte->fecha }} </span> 
-					PERIODO: <span class="perido">{{ $reporte->periodo }}</span>
-					CRASIFICACIÓN FINANCIERA: <input type="text" value="{{ $reporte->clasi_financiera }}" class="crasi">
+					FECHA: <input type="text" value="sin datos" class="fecha"> 
+					PERIODO: <input type="text" value="sin datos" class="periodo">
+					CRASIFICACIÓN FINANCIERA: <input type="text" value="sin datos" class="crasi">
 				</div>
-				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<input type="text" value="{{ $reporte->importe }}" class="importe"></div>
-				<div><input type="text" value="({{ $reporte->importe_letra }})" class="importeletra"></div>
+				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<input type="text" value="sin datos" class="importe"></div>
+				<div><input type="text" value="(sin datos)" class="importeletra"></div>
 			</div><br>
 			<div class="border1">
 				<div>
-					NOMBRE DEL BENEFICIARIO: <input type="text" value="{{ $reporte->beneficiario }}" class="beneficiario">
+					NOMBRE DEL BENEFICIARIO: <input type="text" value="sin datos" class="beneficiario">
 				</div>
 				<div>
-					RFC: <input type="text" class="rfc" value="{{ $reporte->rfc }}">
-					N° BENEFICIARIO: <input class="numbene" type="text" value="{{ $reporte->num_beneficiario }}">
+					RFC: <input type="text" class="rfc" value="sin datos">
+					N° BENEFICIARIO: <input class="numbene" type="text" value="sin datos">
 				</div>
 				<div>
-					TIPO DE BENEFICIARIO: <input type="text" value="{{ $reporte->tipo }}" class="tipo">
+					TIPO DE BENEFICIARIO: <input type="text" value="sin datos" class="tipo">
 				</div>
-				<div>CONCEPTO: <input  class="concepto" value="{{ $reporte->concepto }}" readonly></div>
+				<div>CONCEPTO: <input  class="concepto" value="sin datos" readonly></div>
 				<div>
-					NUM DE PRECEDENCIA: <input type="text" class="num" value="{{ $reporte->num_procedencia }}">
-					NOMBRE DE LA DEPENDENCIA <input type="text" class="nombre" value="{{ $reporte->nom_procedencia }}">
+					NUM DE PRECEDENCIA: <input type="text" class="num" value="sin datos">
+					NOMBRE DE LA DEPENDENCIA <input type="text" class="nombre" value="sin datos">
 				</div>
-				<div>CUENTA BANCARIA DE CARGO: <input type="text" class="cuenta" value="{{ $reporte->cuenta_bancaria }}"></div>
+				<div>CUENTA BANCARIA DE CARGO: <input type="text" class="cuenta" value="sin datos"></div>
 			</div>
 			<br>
 			<div class="border2">
 				<center><p><strong>RESPONSABLE DEL TRÁMITE</strong></p></center>	
 				<div>	
-					DEPENDENCIA: <input type="text" value="{{ $reporte->dependencia }}" class="dependencia"> 
+					DEPENDENCIA: <input type="text" value="sin datos" class="dependencia"> 
 				</div>
 				<div>	
-					UNIDAD: <input type="text" value="{{ $reporte->unidad }}" class="unidad">
+					UNIDAD: <input type="text" value="sin datos" class="unidad">
 				</div>
 			</div><br>
 			<table border="1">
@@ -60,7 +60,6 @@
 						<th>DEPENDENCIA</th>
 						<th>UNIDAD</th>
 						<th>PROYECTO</th>
-						<th>PARTIDA</th>
 						<th>DESCRIPCIÓN</th>  
 						<th>CLAVE DE COMPROMISO</th>
 						<th>IMPORTE</th>
@@ -68,25 +67,24 @@
 				</thead>
 				<tbody>
 					<tr>      
-						<td>{{ $reporte->num_dependencia }}</td>
-						<td>{{ $reporte->num_unidad }}</td>
-						<td>{{ $reporte->num_proyecto }}</td>
-						<td>{{ $reporte->codigo_p }}</td>
-						<td>{{ $reporte->nombre_p }}</td>
-						<td></td>
-						<td>{{ $reporte->importe }}</td>
+						<td>sin datos</td>
+						<td>sin datos</td>
+						<td>sin datos</td>
+						<td>sin datos</td>
+						<td>sin datos</td>
+						<td>sin datos</td>
 					</tr>
 					<tr>
-						<td colspan="6" class="total">TOTAL</td>
-						<td>{{ $reporte->importe }}</td>
+						<td colspan="5" class="total">TOTAL</td>
+						<td>sin datos</td>
 					</tr>
 					<tr>
-						<th colspan="6">DESGROSE DE DEDUCTIVAS</th>
+						<th colspan="5">DESGROSE DE DEDUCTIVAS</th>
 						<th>IMPORTE</th>
 					</tr>
 					<tr>
-						<td colspan="6">TOTAL</td>
-						<td>{{ $reporte->importe }}</td>
+						<td colspan="5">TOTAL</td>
+						<td>sin datos</td>
 					</tr>
 				</tbody>
 			</table>
@@ -117,4 +115,3 @@
 		</footer>
 	</body>
 </html>
-@endforeach

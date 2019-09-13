@@ -40,10 +40,12 @@ class ResponsableController extends Controller
     {
         /* Se hace la validacion de los comapos del formulario */
         $rules = array(
-            'dependencia'   => 'required|string',
-            'unidad'        => 'required|string',
-            'num_proyecto'  => 'required|string',
-            'nombre'        => 'required|string'
+            'num_dependencia'   => 'required|string',
+            'dependencia'       => 'required|string',
+            'num_unidad'        => 'required|string',
+            'unidad'            => 'required|string',
+            'num_proyecto'      => 'required|string',
+            'nombre'            => 'required|string'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -53,10 +55,12 @@ class ResponsableController extends Controller
         }
 
         $form_data = array(
-            'dependencia'   => $request->dependencia,
-            'unidad'        => $request->unidad,
-            'num_proyecto'  => $request->num_proyecto,
-            'nombre'        => $request->nombre
+            'num_dependencia'   => $request->num_dependencia,
+            'dependencia'       => $request->dependencia,
+            'num_unidad'        => $request->num_unidad,
+            'unidad'            => $request->unidad,
+            'num_proyecto'      => $request->num_proyecto,
+            'nombre'            => $request->nombre
         );
 
         Responsable::create($form_data);
@@ -81,10 +85,12 @@ class ResponsableController extends Controller
     {
         /* Se hace la validacion de los comapos del formulario */
         $rules = array(
-            'dependencia'   => 'required|string',
-            'unidad'        => 'required|string',
-            'num_proyecto'  => 'required|string',
-            'nombre'        => 'required|string'
+            'num_dependencia'   => 'required|string',
+            'dependencia'       => 'required|string',
+            'num_unidad'        => 'required|string',
+            'unidad'            => 'required|string',
+            'num_proyecto'      => 'required|string',
+            'nombre'            => 'required|string'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -94,10 +100,12 @@ class ResponsableController extends Controller
         }
 
         $form_data = array(
-            'dependencia'   => $request->dependencia,
-            'unidad'        => $request->unidad,
-            'num_proyecto'  => $request->num_proyecto,
-            'nombre'        => $request->nombre
+            'num_dependencia'   => $request->num_dependencia,
+            'dependencia'       => $request->dependencia,
+            'num_unidad'        => $request->num_unidad,
+            'unidad'            => $request->unidad,
+            'num_proyecto'      => $request->num_proyecto,
+            'nombre'            => $request->nombre
         );
 
         Responsable::whereId($request->hidden_id)->update($form_data);
@@ -127,7 +135,9 @@ class ResponsableController extends Controller
     public function downdoaldPlantilla($type){
         
         $plantilla = $form_data = array(
-            'dependencia',        
+            'num_dependencia',
+            'dependencia',
+            'num_unidad',        
             'unidad',        
             'num_proyecto',
             'nombre'           
@@ -153,10 +163,12 @@ class ResponsableController extends Controller
         if($data->count()){
             foreach ($data as $key => $value) {
                 $arr[] = [
-                    'dependencia'   => $value->dependencia,
-                    'unidad'        => $value->unidad,
-                    'num_proyecto'  => $value->num_proyecto,
-                    'nombre'        => $value->nombre
+                    'num_dependencia'   => $value->num_dependencia,
+                    'dependencia'       => $value->dependencia,
+                    'num_unidad'         => $value->num_unidad,
+                    'unidad'            => $value->unidad,
+                    'num_proyecto'      => $value->num_proyecto,
+                    'nombre'            => $value->nombre
                 ];
             }
 

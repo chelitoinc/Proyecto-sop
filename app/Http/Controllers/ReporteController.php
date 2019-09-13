@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
+
 use App\Reporte;
 use App\Beneficiario;
 use App\Crasificado;
 use App\Responsable;
+
 
 use Validator;
 
@@ -25,9 +28,9 @@ class ReporteController extends Controller
             ->get();
 
         
-        $beneficiarios = Beneficiario::orderBY('id','DESC')->get();
-        $crasificados = Crasificado::orderBY('id','DESC')->get();
-        $responsables = Responsable::orderBy('id', 'DESC')->get();
+        $beneficiarios = Beneficiario::orderBY('id','ASC')->get();
+        $crasificados = Crasificado::orderBY('id','ASC')->get();
+        $responsables = Responsable::orderBy('id', 'ASC')->get();
 
         if (request()->ajax()) {
             return datatables()->of($reportes)
@@ -41,12 +44,18 @@ class ReporteController extends Controller
                     name="delete" id="' . $data->id . '"
                     class="delete 
                     "><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= '<a style="cursor:pointer"
+                    name="pdf" id="' . $data->id . '"
+                    class="pdf 
+                    "><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a> ';
                     return $button;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
         return view('reportes.reportes',[
+            'reportes'      => $reportes,
             'beneficiarios' => $beneficiarios,
             'crasificados'  => $crasificados,
             'responsables'  => $responsables
@@ -178,4 +187,37 @@ class ReporteController extends Controller
         $data = Reporte::findOrFail($id);
         $data->delete();
     }
+
+    public function exportpdf($id){
+
+        /* $reportes = Reporte::query('reporte')
+            ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
+            ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
+            ->select('reporte.*', 
+                                'beneficiario.beneficiario', 
+                                'beneficiario.rfc',
+                                'beneficiario.num_beneficiario',
+                                'beneficiario.tipo',
+                                'responsable.num_proyecto',
+                                'responsable.dependencia',
+                                'responsable.unidad'
+                    )
+            ->where('reporte.id',$id)
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        $pdf = PDF::loadView('plantillas.plantilla', [
+            'reportes' => $reportes
+        ]); 
+
+        return $pdf->stream(); */
+        
+        /* Example to download a document PDF */
+        $pdf = PDF::loadView('plantillas.example');
+
+        return $pdf->stream(); 
+        
+
+    }
+
 }

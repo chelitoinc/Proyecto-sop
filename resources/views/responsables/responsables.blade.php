@@ -81,8 +81,9 @@
                                 <table id="table_responsables" class="text-center table table-hover" >
                                     <thead>
                                         <tr role="row" class="text-center bg bg-gray">
-                                            {{-- <th style="width: 25%">Foto</th> --}}
+                                            <th style="width: 25%"># Dependencia</th>
                                             <th style="width: 15%">Dependencia</th>
+                                            <th style="width: 25%"># Unidad</th>
                                             <th style="width: 20%">Unidad Administrativa</th>
                                             <th style="width: 15%">Numero de Proyecto</th>
                                             <th style="width: 35%">Nombre de Proyecto</th>
@@ -115,8 +116,16 @@
                     <div class="well well-sm">
                         <div class="row">
                             <div class="col-xs-12">
+                                <p>Num de Dependencia</p>
+                                <input name="num_dependencia" id="num_dependencia" class="form-control" type="text"/>
+                            </div>
+                            <div class="col-xs-12">
                                 <p>Dependencia</p>
-                                <input name="dependencia" id="dependencia" class="form-control" type="text" value="Secretaría de Obras Públicas" readonly/>
+                                <input name="dependencia" id="dependencia" class="form-control" type="text" value="Secretaría de Obras Públicas"/>
+                            </div>
+                            <div class="col-xs-12">
+                                <p>Num de Unidad</p>
+                                <input name="num_unidad" id="num_unidad" class="form-control" type="text"  />
                             </div>
                             <div class="col-xs-12">
                                 <p>Unidad</p>
@@ -174,7 +183,9 @@
             "serverSide": true,
             "ajax": "{{ route('responsables.index') }}",
             "columns":[
+                { "data": "num_dependencia" },
                 { "data": "dependencia" },
+                { "data": "num_unidad" },
                 { "data": "unidad" },
                 { "data": "num_proyecto" },
                 { "data": "nombre"},
@@ -264,7 +275,9 @@
                 url:"/responsables/"+id+"/edit",
                 dataType:"json",
                 success:function(html){
+                    $('#num_dependencia').val(html.data.num_dependencia);
                     $('#dependencia').val(html.data.dependencia);
+                    $('#num_unidad').val(html.data.num_unidad);
                     $('#unidad').val(html.data.unidad);
                     $('#num_proyecto').val(html.data.num_proyecto);
                     $('#nombre').val(html.data.nombre);

@@ -3,6 +3,7 @@
 @section('content_header')
 
 {{-- Datatable Tramite --}}
+<span id="pdf_result"></span>
 <div class="card">
     <div class="col-xs-12">
         <div class="box box-default">
@@ -10,10 +11,11 @@
                 <h2 class="box-title">Altas de Reportes</h2>
             </div>
             <!--Boton para abrir el modal -->
-            <div class="col-xs-2">
+            <div class="col-xs-3">
                 <button type="button" name="create_button" id="create_button" class="btn btn-success btn-sm">
                     <strong>Nuevo Reporte</strong>
-                </button>
+                </button>   
+                <a href="{{ route('plantillas.pdf') }}" class="btn btn-danger">Link</a>       
             </div>
             <!-- Tabla Usuarios-->
             <hr class="col-xs-12">
@@ -199,6 +201,25 @@
 </div>
 <!-- Modal Fin -->
 
+<!-- Modal Seguridad-->
+<div id="pdfModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg bg-red">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmar Descarga</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="ok_button_pdf" id="ok_button_pdf" class="btn btn-danger">Descargar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Fin -->
+
 <script type="text/javascript">
     
     $(document).ready(function() {
@@ -224,7 +245,7 @@
                 // Remove the formatting to get integer data for summation
                 var intVal = function ( i ) {
                     return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
+                        i.replace(',', '.', 2, '$')*1 :
                         typeof i === 'number' ?
                             i : 0;
                 };
@@ -239,7 +260,7 @@
     
                 // Total over this page
                 pageTotal = api
-                    .column( 3, { page: 'current'} )
+                    .column( 3, { page: 'current',} )
                     .data()
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
@@ -395,12 +416,27 @@
             })
         });
 
-        
+        /* Exportar PDF */
+        $(document).on('click', '.pdf', function(){
+            reporte_id = $(this).attr('id');
+            $('.modal-title').text("Confirmar Descarga");
+            $('#ok_button_pdf').text("Descargar");
+            $('#pdfModal').modal('show');
+        });
 
+        $('#ok_button_pdf').click(function(){
+            $.ajax({
+                url:"{{ route('plantillas.pdf') }}",
+                beforeSend:function(){
+                    setTimeout(function(){
+                    $('#pdfModal').modal('hide');
+                    $('#ok_button_button').text('Descargando...');
+                    }, 1500);
+                }
+            })
+        });
 
-        
-
-
+       
     });
 
 </script>

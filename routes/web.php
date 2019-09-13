@@ -30,10 +30,13 @@ Route::post('partidas/importData', 'PartidaController@importPartida');
 
 Route::get('partidas/empty','PartidaController@empty')->name('partidas.empty');
 
-/* RUTAS TRAMITE */
+/* RUTAS REPORTES */
 Route::resource('reportes', 'ReporteController');
 Route::post('reportes/update', 'ReporteController@update')->name('reportes.update');
 Route::get('reportes/destroy/{id}', 'ReporteController@destroy');
+Route::get('reportes/pdf/{id}', 'ReporteController@exportpdf');
+
+
 
 /* RUTAS BENEFICIARIO */
 Route::resource('beneficiario', 'BeneficiarioController');
@@ -57,5 +60,5 @@ Route::get('clasificados/downdoaldPlantilla/{type}', 'ResponsableController@down
 Route::post('clasificados/importData', 'ResponsableController@importResponsables');
 
 /* RUTA PLANTILLAS PDF */
-//Route::get('plantillas', 'PlantillaController');
-Route::resource('plantillas', 'PlantillaController');
+//Route::get('plantillas/pdf/{id}', 'PlantillaController@exportpdf');
+Route::get('plantillas/', 'PlantillaController@index')->name('plantillas.pdf');
