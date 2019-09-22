@@ -288,7 +288,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <label for="partida">Cuenta destino</label>
-                                <select id="destino" name="destino" class="js-example-placeholder-single js-states form-control"">
+                                <select id="destino_id" name="destino_id" class="js-example-placeholder-single js-states form-control"">
                                     <option>Seleccione</option>
                                     @foreach ($partidas as $partida )
                                         <option value="{{ $partida->id }}">Clave: {{ $partida->urg }}, URG: {{ $partida->cuenta }}, {{ $partida->nombre_de_cuenta }}</option>
@@ -371,19 +371,6 @@
             </div>
             <div class="modal-body">
                 <p class="lead">Se eliminaran unicamente las partidas que no esten en uso.</p>
-                {{-- <form method="POST" id="from-delete">
-                    @csrf
-                    <div class="well well-sm">
-                        <div class="row">
-                            <div class="col-xs-8">
-                                <label for="fecha">Eliminar apartir de...</label>
-                                <input name="fecha" id="fecha" class="form-control" type="date" />
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <input type="submit" class="btn btn-primary" value="Eliminar">
-                </form> --}}
             </div>
             <div class="modal-footer">
                 <button type="button" name="ok_vaciar" id="ok_vaciar" class="btn btn-danger">Vaciar</button>
@@ -402,6 +389,30 @@
         $('#table_partidas').DataTable({
             "processing": true,
             "serverSide": true,
+            "language": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
             "ajax": "{{ route('partidas.index') }}",
             "columns":[
                 { "data": "urg" },
@@ -438,7 +449,7 @@
         $('#trans_button').click(function(){
             $('#chance_form')[0].reset();
             $('.modal-title').text("Transferecia");
-            $('#action_button').val("Transferir");
+            $('#actionbutton').val("Transferir");
             $('#action').val("Transferir");
             $('#chanceModal').modal('show');
         });/* Fin Script */
@@ -578,7 +589,7 @@
                 success:function(html){
                     $('#id').val(html.data.id);
                     $('#partida').val(html.data.urg);
-                    $('#urge').val(html.data.cuenta);
+                    $('#urge').val(html.data.cuenta);                   
                     $('#hidden_id').val(html.data.id);
                     $('.modal-title').text("Transferir a cuenta");
                     $('#actionbutton').val("Transferir");
@@ -594,7 +605,7 @@
 
             if($('#actionbutton').val() == 'Transferir'){
                 $.ajax({
-                    url:"{{ route('partidas.change') }}",
+                    url:"{{ route('transferencia.ready') }}",
                     method:"POST",
                     data:new FormData(this),
                     contentType: false,
@@ -621,7 +632,7 @@
                         }
                         $('#form_result').html(html);
                     }
-                })
+                });
             }
 
         });/* Fin Script */

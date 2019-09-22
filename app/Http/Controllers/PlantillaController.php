@@ -31,14 +31,14 @@ class PlantillaController extends Controller
             ->orderBy('id', 'ASC')
             ->get();
 
-        $pdf   = PDF::loadView('plantillas.plantilla', compact('reportes')); 
+        $pdf   = PDF::loadView('plantillas.plantillaReporte', compact('reportes')); 
 
-		return $pdf->stream(); 
+		return $pdf->stream();   
 
         //$reportes = Reporte::orderBy('id', 'asc')->where('id',2)->get();
-        /* return view('plantillas.plantilla',[
+        /* return view('plantillas.plantillaReporte',[
             'reportes' => $reportes
-        ]); */ 
+        ]);  */
     }
 
     public function exportpdf($id){

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\User;
 use Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Http\UploadedFile;
+
 
 class UserController extends Controller{
     // Autorización
@@ -121,7 +126,7 @@ class UserController extends Controller{
         $data->delete();
     }
 
-    //Vista a configuración
+    //Vista a configuracion
     public function config(){
         return view('user.config');
     }
@@ -146,7 +151,7 @@ class UserController extends Controller{
         $email = $request->input('email');
 
         // Subir la imagen
-        $image_path = $request->file('image_path');
+        $image_path = $request->file('foto');
         if ($image_path) {
             // Poner nombre unico
             $image_path_name = time() . $image_path->getClientOriginalName();
@@ -171,8 +176,11 @@ class UserController extends Controller{
                         ->with(['message' => 'Usuario actualizado correctamente']);
     }
 
+    /* Funci?n sin funcionamiento no hace ni madres */
     public function getImage($filename) {
         $file = Storage::disk('users')->get($filename);
         return new Response($file, 200);
     }
+
+
 }

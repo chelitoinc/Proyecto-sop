@@ -285,17 +285,15 @@ class PartidaController extends Controller
         return back()->with('success', 'Datos importados correctamente.');
     }
 
-    public function change(Request $request){
+    public function tranferencia(Request $request){
 
         /* Se hace la validacion de los comapos del formulario */
         $rules = array(
-            'partida'   => 'required|integer|min:4',
-            'urge'      => 'required|integer|min:4',
-            'mes'       => 'required|string|max:255',
-            'monto'     => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'destino'   => 'required|integer',
-            'mes2'      => 'required|string',
-            'monto2'    => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            'mes'           => 'required|string',
+            'monto'         => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'destino_id'    => 'required',
+            'mes2'          => 'required|string',
+            'monto2'        => 'required|regex:/^\d+(\.\d{1,2})?$/'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -304,17 +302,17 @@ class PartidaController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
-        $partida   = $request->partida;
-        $urge      = $request->urge;
-        $mes       = $request->mes;
-        $monto     = $request->monto;
-        $destino   = $request->destino;
-        $mes2      = $request->mes2;
-        $monto2    = $request->monto2;
+        $origen       = $request->id;
+        $mes          = $request->mes;
+        $monto        = $request->monto;
+        $destino_id   = $request->destino;
+        $mes2         = $request->mes2;
+        $monto2       = $request->monto2;
 
         /*Partida::whereId($request->hidden_id)->update($form_data); */
-        Partida::table('partidas_urg')->decrement($mes, $menosmonto)->where('id',$origen);
-        Partida::table('partidas_urg')->increment($mes2, $masmonto)->where('id', $destino);
+        //Partida::whereId($request->hidden_id)->update($form_data);
+        /* Partida::table('partidas_urg')->decrement($mes, $monto)->where('id',$hidden_id);
+        Partida::table('partidas_urg')->increment($mes2, $monto2)->where('id', $destino_id); */
 
         return response()->json(['success' => 'Transferencia concretada con exito.']);
     }

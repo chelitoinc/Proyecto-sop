@@ -3,7 +3,6 @@
 @section('content_header')
 
 {{-- Datatable Tramite --}}
-<span id="pdf_result"></span>
 <div class="card">
     <div class="col-xs-12">
         <div class="box box-default">
@@ -14,8 +13,22 @@
             <div class="col-xs-3">
                 <button type="button" name="create_button" id="create_button" class="btn btn-success btn-sm">
                     <strong>Nuevo Reporte</strong>
-                </button>   
-                <a href="{{ route('plantillas.pdf') }}" class="btn btn-danger">Link</a>       
+                </button>  
+            </div>
+            
+            <div class="col-xs-3">
+                <p>Descargar reporte</p> 
+                <form method="post" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data">
+                    @csrf
+                    <select name="id_folio" id="id_folio" class="form-control">
+                        <option>Selecciona...</option>
+                        @foreach ($reportes as $reporte)
+                            <option value="{{ $reporte->id }}">{{ $reporte->num_folio }}</option>
+                        @endforeach
+                    </select>
+                    <div class="clearfix">-</div>
+                    <input type="submit" name="button-pdf" id="button-pdf" value="Descargar" class="btn btn-primary" >
+                </form>
             </div>
             <!-- Tabla Usuarios-->
             <hr class="col-xs-12">
@@ -27,12 +40,12 @@
                                 <table id="table_reportes" class="table table-hover text-center" >
                                     <thead>
                                         <tr role="row" class="bg bg-gray">
-                                            <th style="width: 13%">Número de Folio</th>
-                                            <th style="width: 25%">Nombre del Proveedor</th>
-                                            <th style="width: 10%">Importe</th>
-                                            <th style="width: 15%">Proyecto</th>
-                                            <th style="width: 15%">Fecha</th>
-                                            <th style="width: 10%">Acción</th> 
+                                            <th style="width: 10%">Número de Folio</th>
+                                            <th style="width: 15%">Nombre del Proveedor</th>
+                                            <th style="width: 5%">Importe</th>
+                                            <th style="width: 5%">Proyecto</th>
+                                            <th style="width: 5%">Fecha</th>
+                                            <th style="width: 5%">Acción</th> 
                                         </tr>
                                     </thead>
                                 </table>
@@ -201,32 +214,80 @@
 </div>
 <!-- Modal Fin -->
 
-<!-- Modal Seguridad-->
+
+{{-- Modal Descargar pdf --}}
 <div id="pdfModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg bg-red">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Confirmar Descarga</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" name="ok_button_pdf" id="ok_button_pdf" class="btn btn-danger">Descargar</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg bg-blue">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Descargar Reporte</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 align="center" style="margin:0;">Descargar este reporte?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="ok_button_pdf" id="ok_button_pdf" class="btn btn-danger">Descargar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Modal Fin -->
+{{-- Modal Final --}}
 
 <script type="text/javascript">
+
+    /* Formato a numeros */
+    var formatNumber = {
+        separador: ",", // separador para los miles
+        sepDecimal: '.', // separador para los decimales
+        formatear:function (num){
+            num +='';
+            var splitStr = num.split('.');
+            var splitLeft = splitStr[0];
+            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+            var regx = /(\d+)(\d{3})/;
+            while (regx.test(splitLeft)) {
+                splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+            }
+            return this.simbol + splitLeft +splitRight;
+        },
+        new:function(num, simbol){
+            this.simbol = simbol ||'';
+            return this.formatear(num);
+        }
+    }
+    /* Fin */
     
     $(document).ready(function() {
         /* Consulta Ajax Tabla Reportes */
         $('#table_reportes').DataTable({
             "processing": true,
             "serverSide": true,
+            "language": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
             "ajax": "{{ route('reportes.index') }}",
             "columns":[
                 { "data": "num_folio" }, /* Numero de folio */
@@ -268,12 +329,36 @@
     
                 // Update footer
                 $( api.column( 3 ).footer() ).html(
-                    '$'+ total 
+                    '$'+ formatNumber.new(total) 
                 );
             },
             "processing": true,
             "searching": true,
             "serverSide": true,
+            "language": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
             "ajax": "{{ route('reportes.index') }}",
             "columns":[
                 { "data": "id" },
@@ -416,27 +501,6 @@
             })
         });
 
-        /* Exportar PDF */
-        $(document).on('click', '.pdf', function(){
-            reporte_id = $(this).attr('id');
-            $('.modal-title').text("Confirmar Descarga");
-            $('#ok_button_pdf').text("Descargar");
-            $('#pdfModal').modal('show');
-        });
-
-        $('#ok_button_pdf').click(function(){
-            $.ajax({
-                url:"{{ route('plantillas.pdf') }}",
-                beforeSend:function(){
-                    setTimeout(function(){
-                    $('#pdfModal').modal('hide');
-                    $('#ok_button_button').text('Descargando...');
-                    }, 1500);
-                }
-            })
-        });
-
-       
     });
 
 </script>

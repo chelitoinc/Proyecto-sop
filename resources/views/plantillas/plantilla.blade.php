@@ -4,13 +4,268 @@
 	<head>
 		<meta charset="utf-8">
 		<title>System Sop Reporte</title>
-		<link href="{{ asset('css/style.css') }}" rel="stylesheet">
 	</head>
 	<body>
 		<header>
+			<style>
+				.clearfix:after {
+					content: "";
+					display: table;
+					clear: both;
+				}
+
+				a {
+					color: #5D6975;
+					text-decoration: underline;
+				}
+
+
+				/*  */
+				*{
+					font-size:12px;
+					font-family: Arial;
+				}
+
+				body {
+					position: relative;
+					margin: 0 auto;
+					font-size: 12px;
+					font-family: Arial;
+				}
+
+				header {
+					padding: 10px 0;
+					margin-bottom: 30px;
+				}
+
+				#logo {
+					text-align: center;
+					margin-bottom: 10px;
+				}
+
+				#logo img {
+					width: 320px;
+				}
+
+				input {
+					margin: 1px;
+					padding: 3px;
+					border: none;
+					text-align: center;
+					border-bottom: 1px solid #000;
+				}
+
+				.folio {
+					width: 10px;
+				}
+
+				.codigo {
+					width: 10px;
+				}
+
+				.fecha {
+					width: 80px;
+					
+				}
+				
+				span{
+					text-decoration: underline;	
+				}
+
+				.periodo {
+					width: 100px;
+				}
+
+				.crasi {
+					width: 210px;
+				}
+
+				.importe {
+					width: 50pxpx;
+				}
+
+				.importeletra {
+					display: block;
+					width: 96%;
+				}
+
+				.beneficiario {
+					width: 75%;
+				}
+
+				.rfc {
+					width: 30%;
+				}
+
+				.numbene {
+					width: 30%;
+				}
+
+				.nombre {
+					width: 31%;
+				}
+
+				.tipo {
+					width: 79%;
+				}
+
+				.concepto {
+					margin: 10px;
+					width: 86%;
+					height: 47px;
+					text-align: justify;
+					border: 1px solid #000;
+				}
+
+				.cuenta {
+					width: 72%;
+				}
+
+				.dependencia {
+					width: 83%;
+				}
+
+				.unidad {
+					width: 88%;
+				}
+
+
+				/* TABLA */
+
+				.border {
+					height: 80px;
+					padding: 1px;
+					border: 1px solid #000;
+				}
+
+				.border1 {
+					height: 205px;
+
+					border: 1px solid #000;
+				}
+
+				.border2 {
+					height: 89px;
+					border: 1px solid #000;
+				}
+
+				.firma1 {
+					width: 40%;
+					text-align: center;
+					float: left;
+				}
+
+				.firma1 input {
+					width: 100%;
+				}
+
+				.firma2 {
+					width: 40%;
+					text-align: center;
+					float: right;
+				}
+
+				.firma2 input {
+					width: 100%;
+				}
+
+				.minimi {
+					text-align: center;
+					font-size: 9px;
+				}
+
+				#project {
+					float: left;
+				}
+
+				#project span {
+					color: #5D6975;
+					text-align: right;
+					width: 52px;
+					margin-right: 10px;
+					display: inline-block;
+					font-size: 0.8em;
+				}
+
+				#company {
+					float: right;
+					text-align: right;
+				}
+
+				#project div,
+				#company div {
+					white-space: nowrap;
+				}
+
+				table {
+					border-collapse: collapse;
+					border-spacing: 0;
+					margin-bottom: 20px;
+					margin: 10px;
+					padding: 10px;
+					color: #000;
+				}
+
+				table tr:nth-child(2n-1) td {
+					background: white;
+				}
+
+				table th,
+				table td {
+					text-align: center;
+				}
+
+				table th {
+					padding: 5px 20px;
+					border-bottom: 1px solid #C1CED9;
+					font-weight: normal;
+					background: gray;
+				}
+
+				table .service,
+				table .desc {
+					text-align: left;
+				}
+
+				table td {
+					padding: 5px;
+					text-align: right;
+				}
+
+				table td.service,
+				table td.desc {
+					vertical-align: top;
+				}
+
+				table td.unit,
+				table td.qty,
+				table td.total {
+					font-size: 1.2em;
+				}
+
+				table td.grand {
+					border-top: 1px solid #5D6975;
+					;
+				}
+
+				#notices .notice {
+					color: #5D6975;
+					font-size: 1.2em;
+				}
+
+				footer {
+					color: #5D6975;
+					width: 100%;
+					height: 30px;
+					position: absolute;
+					bottom: 0;
+					padding: 8px 0;
+					text-align: center;
+				}
+			</style>
 			<h2>GOBIERNO DEL ESTADO DE MORELOS</h2>
 			<p>SOLICITUD DE LIBERACIÓN DE RECURSOS <br>GASTO CORRIENTE</p>
-			<div id="company" class="clearfix">
+			<div id="company" >
 				<div>FOLIO: <span class="folio">{{ $reporte->num_folio }}</span></div>
 				<div>CODIGO:{{ $reporte->codigo }}</div>   
 			</div>
@@ -21,9 +276,9 @@
 				<div>
 					FECHA: <span class="fecha">{{ $reporte->fecha }} </span> 
 					PERIODO: <span class="perido">{{ $reporte->periodo }}</span>
-					CRASIFICACIÓN FINANCIERA: <input type="text" value="{{ $reporte->clasi_financiera }}" class="crasi">
-				</div>
-				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<input type="text" value="{{ $reporte->importe }}" class="importe"></div>
+					CRASIFICACIÓN FINANCIERA: <span class="crasi">{{ $reporte->clasi_financiera }}</span>
+				</div><br>
+				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<span class="importe">{{ $reporte->importe }}</span></div>
 				<div><input type="text" value="({{ $reporte->importe_letra }})" class="importeletra"></div>
 			</div><br>
 			<div class="border1">

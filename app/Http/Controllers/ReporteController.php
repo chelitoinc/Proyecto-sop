@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use NumerosEnLetras;
+
 
 use App\Reporte;
 use App\Beneficiario;
@@ -44,11 +46,6 @@ class ReporteController extends Controller
                     name="delete" id="' . $data->id . '"
                     class="delete 
                     "><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<a style="cursor:pointer"
-                    name="pdf" id="' . $data->id . '"
-                    class="pdf 
-                    "><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a> ';
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -70,7 +67,7 @@ class ReporteController extends Controller
     {
         $user = \Auth::user();
         $id = $user->id;
-        $importe_letra = "PESOS";
+        $importe_letra = NumerosEnLetras::convertir($request->importe,'Pesos',false,'Centavos');
 
         $rules = array(
             'num_folio'         => 'required|integer',
@@ -96,16 +93,16 @@ class ReporteController extends Controller
 
         $form_data = array(
             'num_folio'         => $request->num_folio,
-            'codigo'            => $request->codigo,
+            'codigo'            => strtoupper($request->codigo),
             'fecha'             => $request->fecha,
-            'periodo'           => $request->periodo,
-            'clasi_financiera'  => $request->clasi_financiera,
+            'periodo'           => strtoupper($request->periodo),
+            'clasi_financiera'  => strtoupper($request->clasi_financiera),
             'importe'           => $request->importe,
-            'importe_letra'     => $importe_letra,
-            'concepto'          => $request->concepto,
+            'importe_letra'     => strtoupper($importe_letra),
+            'concepto'          => strtoupper($request->concepto),
             'num_procedencia'   => $request->num_procedencia,
-            'nom_procedencia'   => $request->nom_procedencia,
-            'cuenta_bancaria'   => $request->cuenta_bancaria,
+            'nom_procedencia'   => strtoupper($request->nom_procedencia),
+            'cuenta_bancaria'   => strtoupper($request->cuenta_bancaria),
             'beneficiario_id'   => $request->beneficiario_id,
             'partida_id'        => $request->partida_id,
             'responsable_id'    => $request->responsable_id,
@@ -134,7 +131,7 @@ class ReporteController extends Controller
     {
         $user = \Auth::user();
         $id = $user->id;
-        $importe_letra = "PESOS";
+        $importe_letra = NumerosEnLetras::convertir($request->importe,'Pesos',false,'Centavos');
 
         $rules = array(
             'num_folio'         => 'required|integer',
@@ -160,16 +157,16 @@ class ReporteController extends Controller
 
         $form_data = array(
             'num_folio'         => $request->num_folio,
-            'codigo'            => $request->codigo,
+            'codigo'            => strtoupper($request->codigo),
             'fecha'             => $request->fecha,
-            'periodo'           => $request->periodo,
-            'clasi_financiera'  => $request->clasi_financiera,
+            'periodo'           => strtoupper($request->periodo),
+            'clasi_financiera'  => strtoupper($request->clasi_financiera),
             'importe'           => $request->importe,
-            'importe_letra'     => $importe_letra,
-            'concepto'          => $request->concepto,
+            'importe_letra'     => strtoupper($importe_letra),
+            'concepto'          => strtoupper($request->concepto),
             'num_procedencia'   => $request->num_procedencia,
-            'nom_procedencia'   => $request->nom_procedencia,
-            'cuenta_bancaria'   => $request->cuenta_bancaria,
+            'nom_procedencia'   => strtoupper($request->nom_procedencia),
+            'cuenta_bancaria'   => strtoupper($request->cuenta_bancaria),
             'beneficiario_id'   => $request->beneficiario_id,
             'partida_id'        => $request->partida_id,
             'responsable_id'    => $request->responsable_id,
@@ -188,11 +185,14 @@ class ReporteController extends Controller
         $data->delete();
     }
 
-    public function exportpdf($id){
+    public function exportpdf(Request $request){
 
-        /* $reportes = Reporte::query('reporte')
+        $id = $request->id_folio;
+
+        $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
-            ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
+            ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
+            ->join('partida',      'reporte.partida_id',      '=', 'partida.id')
             ->select('reporte.*', 
                                 'beneficiario.beneficiario', 
                                 'beneficiario.rfc',
@@ -200,24 +200,19 @@ class ReporteController extends Controller
                                 'beneficiario.tipo',
                                 'responsable.num_proyecto',
                                 'responsable.dependencia',
-                                'responsable.unidad'
+                                'responsable.unidad',
+                                'responsable.num_dependencia',
+                                'responsable.num_unidad',
+                                'partida.codigo_p',
+                                'partida.nombre_p'
                     )
             ->where('reporte.id',$id)
             ->orderBy('id', 'ASC')
             ->get();
 
-        $pdf = PDF::loadView('plantillas.plantilla', [
-            'reportes' => $reportes
-        ]); 
+        $pdf   = PDF::loadView('plantillas.plantilla', compact('reportes')); 
 
-        return $pdf->stream(); */
-        
-        /* Example to download a document PDF */
-        $pdf = PDF::loadView('plantillas.example');
-
-        return $pdf->stream(); 
-        
-
+        return $pdf->stream();
     }
 
 }
