@@ -10,23 +10,23 @@
                 <h2 class="box-title">Altas de Reportes</h2>
             </div>
             <!--Boton para abrir el modal -->
-            <div class="col-xs-3">
+            <div class="col-xs-4">
                 <button type="button" name="create_button" id="create_button" class="btn btn-success btn-sm">
                     <strong>Nuevo Reporte</strong>
-                </button>  
+                </button> 
             </div>
             
             <div class="col-xs-3">
                 <p>Descargar reporte</p> 
                 <form method="post" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data">
                     @csrf
-                    <select name="id_folio" id="id_folio" class="form-control">
-                        <option>Selecciona...</option>
+                    <select name="id_folio" id="id_folio" class="js-data-example-ajax" multiple="multiple">
+                        <option></option>
                         @foreach ($reportes as $reporte)
                             <option value="{{ $reporte->id }}">{{ $reporte->num_folio }}</option>
                         @endforeach
                     </select>
-                    <div class="clearfix">-</div>
+                    <div class="clearfix">.</div>
                     <input type="submit" name="button-pdf" id="button-pdf" value="Descargar" class="btn btn-primary" >
                 </form>
             </div>
@@ -180,6 +180,22 @@
                                 </select>
                             </div>
                             <div class="col-xs-12">
+                                <label>
+                                    <input type="checkbox" id="check" name="check" value="1" onchange="javascript:showContent()"> Asociar otro reporte a este.
+                                </label>
+                            </div>
+                            <div id="content" style="display: none;">
+                                <div class="col-xs-4">
+                                    <label for="partida" class="text-muted">Reporte</label>
+                                    <select name="partida_id_mas" id="partida_id_mas" class="form-control">
+                                        <option>Selecciona...</option>
+                                        @foreach ($reportes as $reporte)
+                                            <option value="{{ $reporte->id }}">{{ $reporte->codigo_p }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
                                 <div class="clearfix"><hr></div>
                                 <input type="hidden" name="action" id="action" />
                                 <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -236,6 +252,32 @@
 {{-- Modal Final --}}
 
 <script type="text/javascript">
+
+    
+
+
+    /* Llenar select descargas */
+    $('#id_folio').select2({
+        placeholder: {
+            text: 'Select an option'
+        },
+        width: "210",
+        allowClear: true
+    });
+    /* Fin */
+
+    /* Mostrar div ocultos */
+    function showContent() {
+        element = document.getElementById("content");
+        check = document.getElementById("check");
+        if (check.checked) {
+            element.style.display='block';
+        }
+        else {
+            element.style.display='none';
+        }
+    }
+    /* Fin */
 
     /* Formato a numeros */
     var formatNumber = {

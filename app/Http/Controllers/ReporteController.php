@@ -11,6 +11,7 @@ use App\Reporte;
 use App\Beneficiario;
 use App\Crasificado;
 use App\Responsable;
+use App\Partida;
 
 
 use Validator;
@@ -22,10 +23,12 @@ class ReporteController extends Controller
     public function index()
     {
        
+        $partidas = Partida::orderBy('id','DESC')->get();
         $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
-            ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
-            ->select('reporte.*', 'beneficiario.beneficiario', 'responsable.num_proyecto')
+            ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
+            ->join('partida',      'reporte.partida_id',      '=', 'partida.id')
+            ->select('reporte.*', 'beneficiario.beneficiario', 'responsable.num_proyecto','partida.codigo_p')
             ->orderBy('id', 'ASC')
             ->get();
 
@@ -55,7 +58,8 @@ class ReporteController extends Controller
             'reportes'      => $reportes,
             'beneficiarios' => $beneficiarios,
             'crasificados'  => $crasificados,
-            'responsables'  => $responsables
+            'responsables'  => $responsables,
+            'partidas'      => $partidas
         ]);
     }
 
@@ -187,7 +191,8 @@ class ReporteController extends Controller
 
     public function exportpdf(Request $request){
 
-        $id = $request->id_folio;
+        $id [] = $request->id_folio;
+        
 
         $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
@@ -210,7 +215,31 @@ class ReporteController extends Controller
             ->orderBy('id', 'ASC')
             ->get();
 
-        $pdf   = PDF::loadView('plantillas.plantilla', compact('reportes')); 
+            $tables = Reporte::query('reporte')
+            ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
+            ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
+            ->join('partida',      'reporte.partida_id',      '=', 'partida.id')
+            ->select('reporte.*', 
+                                'beneficiario.beneficiario', 
+                                'beneficiario.rfc',
+                                'beneficiario.num_beneficiario',
+                                'beneficiario.tipo',
+                                'responsable.num_proyecto',
+                                'responsable.dependencia',
+                                'responsable.unidad',
+                                'responsable.num_dependencia',
+                                'responsable.num_unidad',
+                                'partida.codigo_p',
+                                'partida.nombre_p'
+                    )
+            ->whereIn('reporte.id',$id)
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        $pdf   = PDF::loadView('plantillas.plantilla', [
+            'reportes' => $reportes,
+            'tables'   => $tables
+        ]); 
 
         return $pdf->stream();
     }

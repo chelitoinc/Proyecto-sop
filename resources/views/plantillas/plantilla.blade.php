@@ -4,6 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>System Sop Reporte</title>
+		<script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
+		<script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.slimscroll.min.js') }}"></script>
+		<script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 	</head>
 	<body>
 		<header>
@@ -21,16 +24,12 @@
 
 
 				/*  */
-				*{
-					font-size:12px;
-					font-family: Arial;
-				}
 
 				body {
 					position: relative;
 					margin: 0 auto;
+					font-family: Arial, Helvetica, sans-serif;
 					font-size: 12px;
-					font-family: Arial;
 				}
 
 				header {
@@ -86,11 +85,11 @@
 
 				.importeletra {
 					display: block;
-					width: 96%;
+					width: 90%;
 				}
 
 				.beneficiario {
-					width: 75%;
+					width: 70%;
 				}
 
 				.rfc {
@@ -102,19 +101,22 @@
 				}
 
 				.nombre {
-					width: 31%;
+					width: 25%;
 				}
 
 				.tipo {
-					width: 79%;
+					width: 70%;
 				}
 
 				.concepto {
-					margin: 10px;
-					width: 86%;
-					height: 47px;
+					width: 80%;
+					height: 35px;
 					text-align: justify;
 					border: 1px solid #000;
+					font-family: Arial, Helvetica, sans-serif;
+					font-size: 10px;
+					float: right;
+					margin-right: 1cm;
 				}
 
 				.cuenta {
@@ -134,13 +136,12 @@
 
 				.border {
 					height: 80px;
-					padding: 1px;
 					border: 1px solid #000;
+					text-align:justify;
 				}
 
 				.border1 {
 					height: 205px;
-
 					border: 1px solid #000;
 				}
 
@@ -156,7 +157,7 @@
 				}
 
 				.firma1 input {
-					width: 100%;
+					width: 90%;
 				}
 
 				.firma2 {
@@ -164,9 +165,24 @@
 					text-align: center;
 					float: right;
 				}
+				.firma1, .firma2, .firma3, p {
+					font-family: Arial, Helvetica, sans-serif;
+					font-size: 10px;
+				}
 
 				.firma2 input {
-					width: 100%;
+					width: 90%;
+				}
+
+				.firma3 {
+					width: 40%;
+					display: block;
+					text-align: center;
+					float: left;
+				}
+
+				.firma3 input {
+					width: 90%;
 				}
 
 				.minimi {
@@ -201,9 +217,10 @@
 					border-collapse: collapse;
 					border-spacing: 0;
 					margin-bottom: 20px;
-					margin: 10px;
-					padding: 10px;
 					color: #000;
+					font-family: Arial, Helvetica, sans-serif;
+					font-size: 10px;
+
 				}
 
 				table tr:nth-child(2n-1) td {
@@ -253,6 +270,10 @@
 					font-size: 1.2em;
 				}
 
+				#company{
+					float: left;
+				}
+
 				footer {
 					color: #5D6975;
 					width: 100%;
@@ -271,7 +292,6 @@
 			</div>
 		</header>
 		<main>
-			<br>
 			<div class="border">
 				<div>
 					FECHA: <span class="fecha">{{ $reporte->fecha }} </span> 
@@ -283,6 +303,7 @@
 			</div><br>
 			<div class="border1">
 				<div>
+					<br>
 					NOMBRE DEL BENEFICIARIO: <input type="text" value="{{ $reporte->beneficiario }}" class="beneficiario">
 				</div>
 				<div>
@@ -292,8 +313,8 @@
 				<div>
 					TIPO DE BENEFICIARIO: <input type="text" value="{{ $reporte->tipo }}" class="tipo">
 				</div>
-				<div>CONCEPTO: <input  class="concepto" value="{{ $reporte->concepto }}" readonly></div>
-				<div>
+				<div>CONCEPTO: <textarea name="conepto" class="concepto">{{ $reporte->concepto }}</textarea> </div>
+				<div><div class="div clearfix">. <br><br></div>
 					NUM DE PRECEDENCIA: <input type="text" class="num" value="{{ $reporte->num_procedencia }}">
 					NOMBRE DE LA DEPENDENCIA <input type="text" class="nombre" value="{{ $reporte->nom_procedencia }}">
 				</div>
@@ -309,31 +330,35 @@
 					UNIDAD: <input type="text" value="{{ $reporte->unidad }}" class="unidad">
 				</div>
 			</div><br>
-			<table border="1">
+@endforeach
+
+			<table border="1" id="miTabla">
 				<thead>
 					<tr>
-						<th>DEPENDENCIA</th>
-						<th>UNIDAD</th>
-						<th>PROYECTO</th>
-						<th>PARTIDA</th>
-						<th>DESCRIPCIÓN</th>  
-						<th>CLAVE DE COMPROMISO</th>
-						<th>IMPORTE</th>
+						<th style="width: 5%">DEPENDENCIA</th>
+						<th style="width: 5%">UNIDAD</th>
+						<th style="width: 5%">PROYECTO</th>
+						<th style="width: 5%">PARTIDA</th>
+						<th style="width: 23%">DESCRIPCIÓN</th>  
+						<th>CLAVE DE COMPROMISO</th> 
+						<th style="width: 5%">IMPORTE</th>
 					</tr>
 				</thead>
 				<tbody>
+						@foreach ( $tables as $table )
 					<tr>      
-						<td>{{ $reporte->num_dependencia }}</td>
-						<td>{{ $reporte->num_unidad }}</td>
-						<td>{{ $reporte->num_proyecto }}</td>
-						<td>{{ $reporte->codigo_p }}</td>
-						<td>{{ $reporte->nombre_p }}</td>
+						<td>{{ $table->num_dependencia }}</td>
+						<td>{{ $table->num_unidad }}</td>
+						<td>{{ $table->num_proyecto }}</td>
+						<td>{{ $table->codigo_p }}</td>
+						<td>{{ $table->nombre_p }}</td>
 						<td></td>
-						<td>{{ $reporte->importe }}</td>
+						<td>{{ $table->importe }}</td>
+						@endforeach
 					</tr>
 					<tr>
 						<td colspan="6" class="total">TOTAL</td>
-						<td>{{ $reporte->importe }}</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th colspan="6">DESGROSE DE DEDUCTIVAS</th>
@@ -341,19 +366,21 @@
 					</tr>
 					<tr>
 						<td colspan="6">TOTAL</td>
-						<td>{{ $reporte->importe }}</td>
+						<td></td>
 					</tr>
+					
 				</tbody>
 			</table>
-			<br><br>
+
+@foreach ($reportes as $reporte)
 		</main>
 		<div class="firma1">
-			<p>RECIBE</p><br>
+			<p>RECIBE</p><br><br>
 			<input type="text" value="">
 			<p>PRESTACIÓN DE SERVICIOS DE CONSTRUCCIÓN INFRAESTRUCTURA Y MANTENIMIENTO URBANO SA DE CV</p>
 		</div>
 		<div class="firma2">
-			<p>....</p><br>
+			<p>SOLICITA</p> <br><br>
 			<input type="text" value="">
 			<p>ENLACE FINANCIERO ADMINISTRATIVO</p>
 			<p class="minimi">
@@ -362,14 +389,20 @@
 				QUE SE CONSUGAN HAN SIDO RECIBIDOS A NUETRA ENTERA SASTISFACCIÓN
 			</p>
 		</div>
-		<div class="firma1">
-			<p>TRAMITO</p><br>
-			<input type="text" value="">
-			<p>PRESTACIÓN DE SERVICIOS DE CONSTRUCCIÓN INFRAESTRUCTURA Y MANTENIMIENTO URBANO SA DE CV</p>
-		</div>
+		<div class="clearfix">.. <br> </div>
+		<div class="firma3">
+				<p>TRAMITO</p><br><br>
+				<input type="text" value="">
+				<p>PRESTACIÓN DE SERVICIOS DE CONSTRUCCIÓN INFRAESTRUCTURA Y MANTENIMIENTO URBANO SA DE CV</p>
+			</div>
 		<footer>
 			<p style="float:right; color:black">Página 1 de 1</p>
 		</footer>
 	</body>
 </html>
 @endforeach
+<script type="text/javascript">
+	/* SUMAR CELDAS DE miTabla */
+	
+    /* FIN */
+</script>

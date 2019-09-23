@@ -26,6 +26,11 @@ class CreateReporteTable extends Migration
             $table->timestamps();
         });
 
+        /* Schema::create( 'afectaciones', function(Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+        }); */
+
         Schema::create('responsable', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
