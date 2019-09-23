@@ -18,12 +18,12 @@
             
             <div class="col-xs-3">
                 <p>Descargar reporte</p> 
-                <form method="post" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data">
+                <form method="post" id="form_pdf" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data">
                     @csrf
-                    <select name="id_folio" id="id_folio" class="js-data-example-ajax" multiple="multiple">
+                    <select name="folio[]" id="id_folio" class="js-data-example-ajax" multiple="multiple">
                         <option></option>
                         @foreach ($reportes as $reporte)
-                            <option value="{{ $reporte->id }}">{{ $reporte->num_folio }}</option>
+                            <option value="{{ $reporte->id }}" required>{{ $reporte->num_folio }}</option>
                         @endforeach
                     </select>
                     <div class="clearfix">.</div>
@@ -253,16 +253,10 @@
 
 <script type="text/javascript">
 
-    
-
-
     /* Llenar select descargas */
     $('#id_folio').select2({
-        placeholder: {
-            text: 'Select an option'
-        },
-        width: "210",
-        allowClear: true
+        placeholder: "Selecciona...",
+        width: "210"
     });
     /* Fin */
 

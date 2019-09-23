@@ -191,9 +191,7 @@ class ReporteController extends Controller
 
     public function exportpdf(Request $request){
 
-        $id [] = $request->id_folio;
-        
-
+        $id = $request->folio;
         $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
             ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
@@ -211,7 +209,7 @@ class ReporteController extends Controller
                                 'partida.codigo_p',
                                 'partida.nombre_p'
                     )
-            ->where('reporte.id',$id)
+            ->where('reporte.id',$request->folio)
             ->orderBy('id', 'ASC')
             ->get();
 
@@ -236,12 +234,21 @@ class ReporteController extends Controller
             ->orderBy('id', 'ASC')
             ->get();
 
-        $pdf   = PDF::loadView('plantillas.plantilla', [
-            'reportes' => $reportes,
-            'tables'   => $tables
+        /* SELECT SUM(importe) from reporte; */
+        $sumas = Reporte::query('reporte')
+        ->whereIn('id', $id)
+        ->sum('importe');
+        $cifraLetras = strtoupper(NumerosEnLetras::convertir($sumas,'Pesos',false,'Centavos'));
+
+        $pdf = PDF::loadView('plantillas.plantilla', [
+            'reportes'      => $reportes,
+            'tables'        => $tables,
+            'sumas'         => $sumas,
+            'cifraLetras'   => $cifraLetras
         ]); 
 
         return $pdf->stream();
+            
     }
 
 }

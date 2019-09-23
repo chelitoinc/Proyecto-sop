@@ -298,9 +298,12 @@
 					PERIODO: <span class="perido">{{ $reporte->periodo }}</span>
 					CRASIFICACIÓN FINANCIERA: <span class="crasi">{{ $reporte->clasi_financiera }}</span>
 				</div><br>
-				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<span class="importe">{{ $reporte->importe }}</span></div>
-				<div><input type="text" value="({{ $reporte->importe_letra }})" class="importeletra"></div>
+@endforeach
+				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<span class="importe">{{ $sumas }}</span></div>
+				<div><input type="text" value="({{ $cifraLetras }})" class="importeletra"></div>
 			</div><br>
+@foreach ($reportes as $reporte )
+				
 			<div class="border1">
 				<div>
 					<br>
@@ -358,7 +361,7 @@
 					</tr>
 					<tr>
 						<td colspan="6" class="total">TOTAL</td>
-						<td></td>
+						<td>{{ $sumas }}</td>	
 					</tr>
 					<tr>
 						<th colspan="6">DESGROSE DE DEDUCTIVAS</th>
@@ -366,7 +369,7 @@
 					</tr>
 					<tr>
 						<td colspan="6">TOTAL</td>
-						<td></td>
+						<td>{{ $sumas }}</td>
 					</tr>
 					
 				</tbody>
