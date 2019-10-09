@@ -6,16 +6,14 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use NumerosEnLetras;
 
-
 use App\Reporte;
 use App\Beneficiario;
 use App\Crasificado;
 use App\Responsable;
 use App\Partida;
-
+use App\Importe;
 
 use Validator;
-
 
 class ReporteController extends Controller
 {
@@ -23,19 +21,22 @@ class ReporteController extends Controller
     public function index()
     {
        
+        $importes = Importe::query('importes')->where('num_folio', '=', 737)->sum('importe');
+
         $partidas = Partida::orderBy('id','DESC')->get();
+
+        $folios = Reporte::orderBY('id','ASC')->distinct()->get();
+
         $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
             ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
-            ->join('partida',      'reporte.partida_id',      '=', 'partida.id')
-            ->select('reporte.*', 'beneficiario.beneficiario', 'responsable.num_proyecto','partida.codigo_p')
-            ->orderBy('id', 'ASC')
-            ->get();
-
+            ->select('reporte.*', 'beneficiario.beneficiario', 'responsable.num_proyecto')
+            ->get(); 
+            
         
         $beneficiarios = Beneficiario::orderBY('id','ASC')->get();
-        $crasificados = Crasificado::orderBY('id','ASC')->get();
-        $responsables = Responsable::orderBy('id', 'ASC')->get();
+        $crasificados  = Crasificado::orderBY('id','ASC')->get();
+        $responsables  = Responsable::orderBy('id', 'ASC')->get();
 
         if (request()->ajax()) {
             return datatables()->of($reportes)
@@ -54,40 +55,37 @@ class ReporteController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('reportes.reportes',[
+        return view('reportes.reportes' ,[
             'reportes'      => $reportes,
             'beneficiarios' => $beneficiarios,
             'crasificados'  => $crasificados,
             'responsables'  => $responsables,
-            'partidas'      => $partidas
+            'folios'        => $folios
         ]);
     }
 
-    public function create()
-    {
-    }
+    public function create(){}
 
     public function store(Request $request)
     {
+
         $user = \Auth::user();
         $id = $user->id;
-        $importe_letra = NumerosEnLetras::convertir($request->importe,'Pesos',false,'Centavos');
 
         $rules = array(
             'num_folio'         => 'required|integer',
             'codigo'            => 'required|string',
             'fecha'             => 'required|date',
             'periodo'           => 'required|string',
-            'clasi_financiera'  => 'required|string',
-            'importe'           => 'required',
             'concepto'          => 'required|string',
-            'num_procedencia'   => 'required|integer',
             'nom_procedencia'   => 'required|string',
             'cuenta_bancaria'   => 'required|string',
             'beneficiario_id'   => 'required|integer',
-            'partida_id'        => 'required|integer',
             'responsable_id'    => 'required|string',
+            'importe'           => 'required',
+            'partida_id'        => 'required'
         );
+
 
         $error = Validator::make($request->all(), $rules);
 
@@ -95,27 +93,44 @@ class ReporteController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
-        $form_data = array(
+        $total = 0;
+        
+        if($request->partida_id){
+            $importe = $request->partida_id;
+            foreach ($importe as $key => $value) {
+                $numero = new Importe();
+                $numero->importe       =  $request->importe[$key];
+                $numero->importe_letra =  strtoupper(NumerosEnLetras::convertir($request->importe[$key],'Pesos',false,'Centavos'));
+                $numero->num_folio     =  $request->num_folio;
+                $numero->partida_id    =  $request->partida_id[$key];
+                $numero->save();
+            }
+            foreach ($importe as $key => $value) {
+                $total +=  $request->importe[$key];
+            }
+        }
+
+        $form_folios = array(
             'num_folio'         => $request->num_folio,
             'codigo'            => strtoupper($request->codigo),
             'fecha'             => $request->fecha,
             'periodo'           => strtoupper($request->periodo),
-            'clasi_financiera'  => strtoupper($request->clasi_financiera),
-            'importe'           => $request->importe,
-            'importe_letra'     => strtoupper($importe_letra),
             'concepto'          => strtoupper($request->concepto),
-            'num_procedencia'   => $request->num_procedencia,
+            'importe_total'     => $total,
             'nom_procedencia'   => strtoupper($request->nom_procedencia),
             'cuenta_bancaria'   => strtoupper($request->cuenta_bancaria),
             'beneficiario_id'   => $request->beneficiario_id,
-            'partida_id'        => $request->partida_id,
             'responsable_id'    => $request->responsable_id,
             'user_id'           => $id
         );
 
-        Reporte::create($form_data);
+        Reporte::create($form_folios);
 
-        return response()->json(['success' => 'Se ha creado un nuevo reporte.']);
+
+        return response()->json([
+            'success' => 'Se ha creado un nuevo reporte.'
+            ]
+        );
     }
 
     public function show($id)
@@ -135,22 +150,20 @@ class ReporteController extends Controller
     {
         $user = \Auth::user();
         $id = $user->id;
-        $importe_letra = NumerosEnLetras::convertir($request->importe,'Pesos',false,'Centavos');
+        //$importe_letra = NumerosEnLetras::convertir($request->importe,'Pesos',false,'Centavos');
 
         $rules = array(
             'num_folio'         => 'required|integer',
             'codigo'            => 'required|string',
             'fecha'             => 'required|date',
             'periodo'           => 'required|string',
-            'clasi_financiera'  => 'required|string',
-            'importe'           => 'required',
             'concepto'          => 'required|string',
-            'num_procedencia'   => 'required|integer',
             'nom_procedencia'   => 'required|string',
             'cuenta_bancaria'   => 'required|string',
             'beneficiario_id'   => 'required|integer',
-            'partida_id'        => 'required|integer',
             'responsable_id'    => 'required|string',
+            'importe'           => 'required',
+            'partida_id'        => 'required|integer'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -159,20 +172,20 @@ class ReporteController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
-        $form_data = array(
+        $form_folios = array(
             'num_folio'         => $request->num_folio,
             'codigo'            => strtoupper($request->codigo),
             'fecha'             => $request->fecha,
             'periodo'           => strtoupper($request->periodo),
-            'clasi_financiera'  => strtoupper($request->clasi_financiera),
+            /* 'clasi_financiera'  => strtoupper($request->clasi_financiera),
             'importe'           => $request->importe,
-            'importe_letra'     => strtoupper($importe_letra),
+            'importe_letra'     => strtoupper($importe_letra), */
             'concepto'          => strtoupper($request->concepto),
-            'num_procedencia'   => $request->num_procedencia,
+            /* 'num_procedencia'   => $request->num_procedencia, */
             'nom_procedencia'   => strtoupper($request->nom_procedencia),
             'cuenta_bancaria'   => strtoupper($request->cuenta_bancaria),
             'beneficiario_id'   => $request->beneficiario_id,
-            'partida_id'        => $request->partida_id,
+            /* 'partida_id'        => $request->partida_id, */
             'responsable_id'    => $request->responsable_id,
             'user_id'           => $id
         );
@@ -183,8 +196,7 @@ class ReporteController extends Controller
 
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         $data = Reporte::findOrFail($id);
         $data->delete();
     }
@@ -192,10 +204,10 @@ class ReporteController extends Controller
     public function exportpdf(Request $request){
 
         $id = $request->folio;
+
         $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
             ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
-            ->join('partida',      'reporte.partida_id',      '=', 'partida.id')
             ->select('reporte.*', 
                                 'beneficiario.beneficiario', 
                                 'beneficiario.rfc',
@@ -205,38 +217,32 @@ class ReporteController extends Controller
                                 'responsable.dependencia',
                                 'responsable.unidad',
                                 'responsable.num_dependencia',
-                                'responsable.num_unidad',
-                                'partida.codigo_p',
-                                'partida.nombre_p'
+                                'responsable.num_unidad'
                     )
-            ->where('reporte.id',$request->folio)
+            ->where('reporte.id',$id)
             ->orderBy('id', 'ASC')
             ->get();
 
-            $tables = Reporte::query('reporte')
-            ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
-            ->join('responsable',  'reporte.responsable_id',  '=', 'responsable.id')
-            ->join('partida',      'reporte.partida_id',      '=', 'partida.id')
-            ->select('reporte.*', 
-                                'beneficiario.beneficiario', 
-                                'beneficiario.rfc',
-                                'beneficiario.num_beneficiario',
-                                'beneficiario.tipo',
-                                'responsable.num_proyecto',
-                                'responsable.dependencia',
-                                'responsable.unidad',
-                                'responsable.num_dependencia',
-                                'responsable.num_unidad',
-                                'partida.codigo_p',
-                                'partida.nombre_p'
-                    )
-            ->whereIn('reporte.id',$id)
-            ->orderBy('id', 'ASC')
+            /* sacando folio  */
+            $folio = Reporte::query('reporte')->where('id',$id)->select('num_folio')->get();
+            //$folio2 = Importe::query('importes')->where('num_folio',$folio)->get();
+
+            $tables = Importe::query('importes')
+            ->join('partida',     'importes.partida_id', '=', 'partida.id')
+            ->join('reporte',     'importes.num_folio', '=', 'reporte.num_folio')
+            ->join('responsable', 'reporte.responsable_id', '=', 'responsable.id')
+            ->select('importes.*', 'partida.descripcion_p', 
+                                   'partida.codigo_p', 
+                                   'responsable.num_unidad',
+                                   'responsable.num_dependencia',
+                                   'responsable.num_proyecto')
+            ->whereIn('importes.num_folio',$folio)
             ->get();
+
 
         /* SELECT SUM(importe) from reporte; */
-        $sumas = Reporte::query('reporte')
-        ->whereIn('id', $id)
+        $sumas = Importe::query('importes')
+        ->whereIn('num_folio', $folio)
         ->sum('importe');
         $cifraLetras = strtoupper(NumerosEnLetras::convertir($sumas,'Pesos',false,'Centavos'));
 
@@ -244,7 +250,7 @@ class ReporteController extends Controller
             'reportes'      => $reportes,
             'tables'        => $tables,
             'sumas'         => $sumas,
-            'cifraLetras'   => $cifraLetras
+            'cifraLetras'   => $cifraLetras 
         ]); 
 
         return $pdf->stream();

@@ -77,9 +77,9 @@
                 {{-- <button type="button" name="trans_button" id="trans_button" class="btn btn-warning btn-sm">
                     <strong>Transferecia</strong>
                 </button> --}}
-                <button type="button" name="delete_button" id="delete_button" class="btn btn-danger btn-sm">
+                {{-- <button type="button" name="delete_button" id="delete_button" class="btn btn-danger btn-sm">
                     <strong>Vacias datos MELP</strong>
-                </button>
+                </button> --}}
             </div>
             <!-- Tabla beneficiario-->
             <hr class="col-xs-12">

@@ -7,7 +7,7 @@
     <div class="col-xs-12">
         <div class="box box-default">
             <div class="box-header">
-                <h2 class="box-title">Altas de Reportes</h2>
+                <h2 class="box-title">Altas de Reportes</h2> 
             </div>
             <!--Boton para abrir el modal -->
             <div class="col-xs-4">
@@ -18,19 +18,20 @@
             
             <div class="col-xs-3">
                 <p>Descargar reporte</p> 
-                <form method="post" id="form_pdf" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data">
+                <form method="post" id="form_pdf" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data" >
                     @csrf
-                    <select name="folio[]" id="id_folio" class="js-data-example-ajax" multiple="multiple">
+                    <select name="folio" id="id_folio" class="js-data-example-ajax">
                         <option></option>
-                        @foreach ($reportes as $reporte)
+                        @foreach ($folios as $reporte)
                             <option value="{{ $reporte->id }}" required>{{ $reporte->num_folio }}</option>
                         @endforeach
                     </select>
+                    <input type="text" name="num_folio" hidden>
                     <div class="clearfix">.</div>
                     <input type="submit" name="button-pdf" id="button-pdf" value="Descargar" class="btn btn-primary" >
-                </form>
+                </form> 
             </div>
-            <!-- Tabla Usuarios-->
+            <!-- Tabla Reportes-->
             <hr class="col-xs-12">
             <div class="box-body">
                 <div class="dataTables_wrapper form-inline dt-bootstrap">
@@ -59,7 +60,7 @@
     </div>
 </div>
 {{-- Datatable Saldos --}}
-<div class="col-xs-6">
+{{-- <div class="col-xs-6">
     <div class="box box-default box-solid collapsed-box">
         <div class="box-header with-border">
             <h3 class="box-title">Saldos Acumulados</h3>
@@ -93,10 +94,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
-</div>
+</div> --}}
 
 <!-- Formulario Modal -->
 <div id="formModal" class="modal fade" role="dialog">
@@ -124,44 +125,19 @@
                                 <label for="fecha" class="text-muted">Fecha</label>
                                 <input name="fecha" id="fecha" class="form-control" type="date"/>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-6">
                                 <label for="periodo" class="text-muted">Periodo</label>
                                 <input name="periodo" id="periodo" class="form-control" type="text" placeholder="Perido">
                             </div>
-                            <div class="col-xs-4">
-                                <label for="clasi_financiera" class="text-muted">Clasificación Financiera</label>
-                                <input name="clasi_financiera" id="clasi_financiera" class="form-control" type="text" placeholder="Clasificación Financiera">
-                            </div>
-                            <div class="col-xs-4">
-                                <label for="importe" class="text-muted">Monto</label>
-                                <input name="importe" id="importe" class="form-control" type="text" placeholder="Monto">
-                            </div>
-                            <div class="col-xs-12">
-                                <label for="concepto" class="text-muted">Concepto de Pago</label>
-                                <textarea name="concepto" id="concepto" class="form-control" rows="2" placeholder="Observaciones ..." ></textarea>
-                            </div>
-                            <div class="col-xs-4">
-                                <label for="num_procedencia" class="text-muted">N° Procedencia</label>
-                                <input name="num_procedencia" id="num_procedencia" class="form-control" type="text" placeholder="N° Procedencia">
-                            </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-6">
                                 <label for="nom_procedencia" class="text-muted">Nombre Procedencia</label>
                                 <input name="nom_procedencia" id="nom_procedencia" class="form-control" type="text" placeholder="Nombre Procedencia">
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-7">
                                 <label for="cuenta_bancaria" class="text-muted">Cuenta Bancaria</label>
                                 <input name="cuenta_bancaria" id="cuenta_bancaria" class="form-control" type="text" placeholder="Cuenta Bancaria">
                             </div>
-                            <div class="col-xs-4">
-                                <label for="responsable_id" class="text-muted">Proyecto</label>
-                                <select name="responsable_id" id="responsable_id" class="form-control">
-                                    <option>Selecciona</option>
-                                    @foreach ($responsables as $responsable)
-                                        <option value="{{ $responsable->id }}">{{ $responsable->num_proyecto }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-5">
                                 <label for="beneficiario_id" class="text-muted">Beneficiario</label>
                                 <select name="beneficiario_id" id="beneficiario_id" class="form-control">
                                     <option>Selecciona</option>
@@ -170,33 +146,62 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-xs-4">
-                                <label for="partida" class="text-muted">Partida</label>
-                                <select name="partida_id" id="partida_id" class="form-control">
+                            <div class="col-xs-3">
+                                <label for="responsable_id" class="text-muted">Proyecto</label>
+                                <select name="responsable_id" id="responsable_id" class="form-control">
                                     <option>Selecciona</option>
-                                    @foreach ($crasificados as $crasificado)
-                                        <option value="{{ $crasificado->id }}">{{ $crasificado->codigo_p }}</option>
+                                    @foreach ($responsables as $responsable)
+                                    <option value="{{ $responsable->id }}">{{ $responsable->num_proyecto }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-xs-12">
-                                <label>
-                                    <input type="checkbox" id="check" name="check" value="1" onchange="javascript:showContent()"> Asociar otro reporte a este.
-                                </label>
+                            <div class="col-xs-9">
+                                <label for="concepto" class="text-muted">Concepto de Pago</label>
+                                <textarea name="concepto" id="concepto" class="form-control" rows="2" placeholder="Observaciones ..." ></textarea>
                             </div>
-                            <div id="content" style="display: none;">
-                                <div class="col-xs-4">
-                                    <label for="partida" class="text-muted">Reporte</label>
-                                    <select name="partida_id_mas" id="partida_id_mas" class="form-control">
-                                        <option>Selecciona...</option>
-                                        @foreach ($reportes as $reporte)
-                                            <option value="{{ $reporte->id }}">{{ $reporte->codigo_p }}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="col-xs-12">
+                                <table id="tabla" class="table table-bordered table-hover dataTable">
+                                    <thead>
+                                        <tr class="bg bg-gray">
+                                            <th>Partida</th>
+                                            <th>Importe</th>
+                                            <th><input type="button" id="add" value="Añadir fila" class="btn btn-primary"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select name="partida_id[]" id="partida_id" class="form-control">
+                                                    <option></option>
+                                                    @foreach ($crasificados as $crasificado)
+                                                    <option value="{{ $crasificado->id }}">{{ $crasificado->codigo_p }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td> 
+                                            <td><input type='text' name='importe[]'></td> 
+                                            <td><input type='button' class='del' value='Eliminar Fila' class='btn btn-danger'></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> 
+                            {{-- <div class="col-xs-6">
+                                <br>
+                                <select name="partida_id" id="partida_id" class="form-control" >
+                                    <option></option>
+                                    @foreach ($crasificados as $crasificado)
+                                    <option value="{{ $crasificado->id }}">{{ $crasificado->codigo_p }}</option>
+                                    @endforeach
+                                </select>                                 
+                            </div>
+                            <div class="col-xs-6">
+                                <br>
+                                <div class="input-group"> 
+                                    <span class="input-group-addon">$</span> <input name="importe" id="importe" class="form-control" type="text"> 
                                 </div>
-                            </div>
+                            </div>  --}}
+
                             <div class="col-xs-12">
-                                <div class="clearfix"><hr></div>
+                                <br>
                                 <input type="hidden" name="action" id="action" />
                                 <input type="hidden" name="hidden_id" id="hidden_id" />
                                 <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Agregar" />
@@ -230,7 +235,6 @@
 </div>
 <!-- Modal Fin -->
 
-
 {{-- Modal Descargar pdf --}}
 <div id="pdfModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -253,30 +257,46 @@
 
 <script type="text/javascript">
 
+    /* Add column with */
+    $(document).ready(function(){
+		/**
+		 * Funcion para añadir una nueva fila en la tabla
+		 */
+		$("#add").click(function(){
+			var nuevaFila="<tr> \
+				<td><select name='partida_id[]' id='partida_id' class='form-control'><option>Selecciona ...</option>@foreach ($crasificados as $crasificado)<option value='{{ $crasificado->id }}''>{{ $crasificado->codigo_p }}</option>@endforeach</select></td> \
+				<td><input type='text' name='importe[]'></td> \
+				<td><input type='button' class='del' value='Eliminar Fila' class='btn btn-danger'></td> \
+			</tr>";
+			$("#tabla tbody").append(nuevaFila);
+		});
+ 
+		// evento para eliminar la fila
+		$("#tabla").on("click", ".del", function(){
+			$(this).parents("tr").remove();
+		});
+	});
+    /* Fin */
+    
     /* Llenar select descargas */
     $('#id_folio').select2({
-        placeholder: "Selecciona...",
+        "processing": true,
+        "serverSide": true,
+        placeholder: "Selecciona numero de folio",
         width: "210"
     });
-    /* Fin */
-
-    /* Mostrar div ocultos */
-    function showContent() {
-        element = document.getElementById("content");
-        check = document.getElementById("check");
-        if (check.checked) {
-            element.style.display='block';
-        }
-        else {
-            element.style.display='none';
-        }
-    }
+    $('#partida_id').select2({
+        "processing": true,
+        "serverSide": true,
+        placeholder: "Selecciona ...",
+        width: "150"
+    });
     /* Fin */
 
     /* Formato a numeros */
     var formatNumber = {
-        separador: ",", // separador para los miles
-        sepDecimal: '.', // separador para los decimales
+        separador: ".", // separador para los miles
+        sepDecimal: ',', // separador para los decimales
         formatear:function (num){
             num +='';
             var splitStr = num.split('.');
@@ -328,14 +348,18 @@
             "columns":[
                 { "data": "num_folio" }, /* Numero de folio */
                 { "data": "beneficiario" }, /* Nombre beneficiario */
-                { "data": "importe", "render": $.fn.dataTable.render.number( ',', '.', 2, '$' ) }, /* Importe */
+                { "data": "importe_total", "render": $.fn.dataTable.render.number( ',', '.', 2, '$' ) }, /* Importe */
                 { "data": "num_proyecto"}, /* Proyecto */
                 { "data": "fecha" }, /* Fecha */
                 { "data": "action"}
             ]
         });/* Fin Script */
         /* Consulta Ajax Tabla Reportes */
+
+        /* CREAR OTRA TABLA FOLIO DONDE CAPTURAR */
+
         $('#table_saldos').DataTable({
+            
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
     
@@ -369,7 +393,10 @@
                 );
             },
             "processing": true,
-            "searching": true,
+            "paging":   false,
+            "ordering": false,
+            "searching": false,
+            "info":     false,
             "serverSide": true,
             "language": {
                 "sProcessing":     "Procesando...",
@@ -400,7 +427,7 @@
                 { "data": "id" },
                 { "data": "num_folio" },
                 { "data": "codigo" },
-                { "data": "importe","render": $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
+                { "data": "codigo","render": $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
                 { "data": "fecha"},
             ]
         });/* Fin Script */
@@ -493,15 +520,12 @@
                     $('#codigo').val(html.data.codigo);
                     $('#fecha').val(html.data.fecha);
                     $('#periodo').val(html.data.periodo);
-                    $('#clasi_financiera').val(html.data.clasi_financiera);
-                    $('#importe').val(html.data.importe);
                     $('#concepto').val(html.data.concepto);
-                    $('#num_procedencia').val(html.data.num_procedencia);
                     $('#nom_procedencia').val(html.data.nom_procedencia);
                     $('#cuenta_bancaria').val(html.data.cuenta_bancaria);
                     $('#responsable_id').val(html.data.responsable_id);
                     $('#beneficiario_id').val(html.data.beneficiario_id);
-                    $('#partida_id').val(html.data.partida_id);
+                    
                     $('#hidden_id').val(html.data.id);
                     $('.modal-title').text("Editar Reporte");
                     $('#action_button').val("Editar");

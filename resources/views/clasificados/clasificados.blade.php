@@ -43,10 +43,9 @@
                 <div class="card-body">
                     <h5 class="card-title">Descargar en diferentes documentos</h5>
                     <a href="{{ url('/clasificados/downloadClasificados/xlsx') }}"><button class="btn btn-dark">Descargar Excel xlsx</button></a>
-                    <a href="{{ url('/clasificados/downloadClasificados/xls') }}"><button class="btn btn-success">Descargar Excel xls</button></a>
-                    <a href="{{ url('/clasificados/downdoaldPlantilla/xlsx') }}"><button class="btn btn-warning">Descargar Prantilla</button></a>
+                    <a href="{{ url('/clasificados/downdoaldPlantillaC/xlsx') }}"><button class="btn btn-warning">Descargar Prantilla</button></a>
 
-                    <form  action="{{ url('clasificados/importData') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
+                    <form  action="{{ url('clasificados/importDataC') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
                         @csrf
                         <br>
                         <input type="file" name="import_file" />

@@ -9,6 +9,7 @@ class CreateReporteTable extends Migration
 
     public function up()
     {
+
         Schema::create('reporte', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
@@ -16,20 +17,20 @@ class CreateReporteTable extends Migration
             $table->string('codigo');
             $table->date('fecha');
             $table->string('periodo');
-            $table->string('clasi_financiera');
-            $table->decimal('importe',10, 2);
-            $table->string('importe_letra');
             $table->string('concepto');
-            $table->integer('num_procedencia');
             $table->string('nom_procedencia');
             $table->string('cuenta_bancaria');
             $table->timestamps();
         });
 
-        /* Schema::create( 'afectaciones', function(Blueprint $table) {
+        Schema::create( 'importes', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-        }); */
+            $table->decimal('importe',10, 2);
+            $table->string('importe_letra');
+            $table->integer('num_folio');
+            $table->timestamps();
+        }); 
 
         Schema::create('responsable', function (Blueprint $table) {
             $table->engine = 'InnoDB';

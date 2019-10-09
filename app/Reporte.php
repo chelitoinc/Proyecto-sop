@@ -13,15 +13,11 @@ class Reporte extends Model
         'codigo',
         'fecha',
         'periodo',
-        'clasi_financiera',
-        'importe',
-        'importe_letra',
         'concepto',
-        'num_procedencia',
+        'importe_total',
         'nom_procedencia',
         'cuenta_bancaria',
         'beneficiario_id',
-        'partida_id',
         'responsable_id',
         'user_id'
     ];

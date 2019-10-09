@@ -41,7 +41,10 @@ Route::get('partidas/empty','PartidaController@empty')->name('partidas.empty');
 Route::resource('reportes', 'ReporteController');
 Route::post('reportes/update', 'ReporteController@update')->name('reportes.update');
 Route::get('reportes/destroy/{id}', 'ReporteController@destroy');
+
+// Ruta para descargar los reportes pidiedo el folio del reporte
 Route::post('reportes/pdf', 'ReporteController@exportpdf')->name('reportes.pdf');
+
 //Route::get('reportes/pdf/{id}', 'ReporteController@exportpdf');
 
 
@@ -56,8 +59,8 @@ Route::resource('clasificados', 'ClasificadoController');
 Route::post('clasificados/update', 'ClasificadoController@update')->name('clasificados.update');
 Route::get('clasificados/destroy/{id}', 'ClasificadoController@destroy');
 Route::get('clasificados/downloadClasificados/{type}', 'ClasificadoController@downloadClasificados');
-Route::get('clasificados/downdoaldPlantilla/{type}', 'ClasificadoController@downdoaldPlantilla');
-Route::post('clasificados/importData', 'ClasificadoController@importClasificados');
+Route::get('clasificados/downdoaldPlantillaC/{type}', 'ClasificadoController@downdoaldPlantillaC');
+Route::post('clasificados/importDataC', 'ClasificadoController@importClasificadosC');
 
 /* RUTAS CLASIFICADOS */
 Route::resource('responsables', 'ResponsableController');

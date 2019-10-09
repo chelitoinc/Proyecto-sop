@@ -43,8 +43,8 @@ class ClasificadoController extends Controller
         /* Se hace la validacion de los comapos del formulario */
         $rules = array(
             'codigo_p'        => 'required|integer',
-            'nombre_p'        => 'required|string|max:255',
-            'descripcion_p'   => 'required|string|max:255'
+            'nombre_p'        => 'required',
+            'descripcion_p'   => 'required'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -126,7 +126,7 @@ class ClasificadoController extends Controller
         })->download($type);
     }
     
-    public function downdoaldPlantilla($type){
+    public function downdoaldPlantillaC($type){
         
         $plantilla = $form_data = array(
             'codigo_p',        
@@ -142,7 +142,7 @@ class ClasificadoController extends Controller
         })->download($type);
     }
 
-    public function importClasificados(Request $request){
+    public function importClasificadosC(Request $request){
         $user = \Auth::user();
         $id = $user->id;
 
@@ -151,15 +151,15 @@ class ClasificadoController extends Controller
         ]);
 
         $path = $request->file('import_file')->getRealPath();
-        $data = Excel::load($path)->get();
+        $data = Excel::load($path, 'UTF-8')->get();
 
         if($data->count()){
             foreach ($data as $key => $value) {
                 $arr[] = [
+                    'user_id'         => $id,
                     'codigo_p'        => $value->codigo_p,
                     'nombre_p'        => $value->nombre_p,
-                    'descripcion_p'   => $value->descripcion_p,
-                    'user_id'         => $id
+                    'descripcion_p'   => $value->descripcion_p
                 ];
             }
 

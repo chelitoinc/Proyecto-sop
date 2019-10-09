@@ -29,7 +29,7 @@
 					position: relative;
 					margin: 0 auto;
 					font-family: Arial, Helvetica, sans-serif;
-					font-size: 12px;
+					font-size: 10px;
 				}
 
 				header {
@@ -135,18 +135,20 @@
 				/* TABLA */
 
 				.border {
-					height: 80px;
+					margin: 0;
+					padding: 0;
+					height: 60px;
 					border: 1px solid #000;
 					text-align:justify;
 				}
 
 				.border1 {
-					height: 205px;
+					height: 173px;
 					border: 1px solid #000;
 				}
 
 				.border2 {
-					height: 89px;
+					height: 85px;
 					border: 1px solid #000;
 				}
 
@@ -200,7 +202,7 @@
 					width: 52px;
 					margin-right: 10px;
 					display: inline-block;
-					font-size: 0.8em;
+					font-size: 10px;
 				}
 
 				#company {
@@ -245,25 +247,10 @@
 				}
 
 				table td {
-					padding: 5px;
-					text-align: right;
+					text-align: center;
 				}
 
-				table td.service,
-				table td.desc {
-					vertical-align: top;
-				}
-
-				table td.unit,
-				table td.qty,
-				table td.total {
-					font-size: 1.2em;
-				}
-
-				table td.grand {
-					border-top: 1px solid #5D6975;
-					;
-				}
+				
 
 				#notices .notice {
 					color: #5D6975;
@@ -283,26 +270,33 @@
 					padding: 8px 0;
 					text-align: center;
 				}
+
+				.scape{
+					margin: 0 auto;
+					padding: 0 auto
+				}
+
 			</style>
 			<h2>GOBIERNO DEL ESTADO DE MORELOS</h2>
 			<p>SOLICITUD DE LIBERACIÓN DE RECURSOS <br>GASTO CORRIENTE</p>
 			<div id="company" >
 				<div>FOLIO: <span class="folio">{{ $reporte->num_folio }}</span></div>
-				<div>CODIGO:{{ $reporte->codigo }}</div>   
+				<div>CODIGO: <span class="codigo">{{ $reporte->codigo }}</span> </div>   
 			</div>
 		</header>
 		<main>
 			<div class="border">
 				<div>
-					FECHA: <span class="fecha">{{ $reporte->fecha }} </span> 
+				 	FECHA: <span class="fecha">{{ $reporte->fecha }} </span> 
 					PERIODO: <span class="perido">{{ $reporte->periodo }}</span>
-					CRASIFICACIÓN FINANCIERA: <span class="crasi">{{ $reporte->clasi_financiera }}</span>
+					CRASIFICACIÓN FINANCIERA: <span class="crasi">PROVEEDOR{{-- {{ $reporte->clasi_financiera }} --}}</span>
 				</div><br>
-@endforeach
-				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<span class="importe">{{ $sumas }}</span></div>
+
+
+				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<span class="importe">{{ $sumas }} </span></div>
 				<div><input type="text" value="({{ $cifraLetras }})" class="importeletra"></div>
 			</div><br>
-@foreach ($reportes as $reporte )
+
 				
 			<div class="border1">
 				<div>
@@ -317,8 +311,8 @@
 					TIPO DE BENEFICIARIO: <input type="text" value="{{ $reporte->tipo }}" class="tipo">
 				</div>
 				<div>CONCEPTO: <textarea name="conepto" class="concepto">{{ $reporte->concepto }}</textarea> </div>
-				<div><div class="div clearfix">. <br><br></div>
-					NUM DE PRECEDENCIA: <input type="text" class="num" value="{{ $reporte->num_procedencia }}">
+				<br><div><div class="div clearfix">. <br><br></div>
+					NUM DE PRECEDENCIA: <input type="text" class="num" value="{{ $reporte->num_beneficiario }}">
 					NOMBRE DE LA DEPENDENCIA <input type="text" class="nombre" value="{{ $reporte->nom_procedencia }}">
 				</div>
 				<div>CUENTA BANCARIA DE CARGO: <input type="text" class="cuenta" value="{{ $reporte->cuenta_bancaria }}"></div>
@@ -327,10 +321,10 @@
 			<div class="border2">
 				<center><p><strong>RESPONSABLE DEL TRÁMITE</strong></p></center>	
 				<div>	
-					DEPENDENCIA: <input type="text" value="{{ $reporte->dependencia }}" class="dependencia"> 
+					DEPENDENCIA: <input type="text" value="{{ $reporte->num_dependencia }} {{ $reporte->dependencia }}" class="dependencia"> 
 				</div>
 				<div>	
-					UNIDAD: <input type="text" value="{{ $reporte->unidad }}" class="unidad">
+					UNIDAD: <input type="text" value="{{ $reporte->num_unidad }} {{ $reporte->unidad }}" class="unidad">
 				</div>
 			</div><br>
 @endforeach
@@ -338,30 +332,31 @@
 			<table border="1" id="miTabla">
 				<thead>
 					<tr>
-						<th style="width: 5%">DEPENDENCIA</th>
-						<th style="width: 5%">UNIDAD</th>
-						<th style="width: 5%">PROYECTO</th>
-						<th style="width: 5%">PARTIDA</th>
-						<th style="width: 23%">DESCRIPCIÓN</th>  
-						<th>CLAVE DE COMPROMISO</th> 
-						<th style="width: 5%">IMPORTE</th>
+						<th>DEPENDENCIA</th>
+						<th>UNIDAD</th>
+						<th>PROYECTO</th>
+						<th>PARTIDA</th>
+						<th style="width: 50%">DESCRIPCIÓN</th>  
+						<th style="width: 5%">CLAVE DE COMPROMISO</th> 
+						<th>IMPORTE</th>
 					</tr>
 				</thead>
 				<tbody>
-						@foreach ( $tables as $table )
-					<tr>      
+						 
+					@foreach ($tables as $table)
+					<tr>
 						<td>{{ $table->num_dependencia }}</td>
 						<td>{{ $table->num_unidad }}</td>
-						<td>{{ $table->num_proyecto }}</td>
+						<td>{{ $table->num_proyecto }} </td>
 						<td>{{ $table->codigo_p }}</td>
-						<td>{{ $table->nombre_p }}</td>
+						<td>{{ $table->descripcion_p }}</td>
 						<td></td>
 						<td>{{ $table->importe }}</td>
-						@endforeach
 					</tr>
+					@endforeach
 					<tr>
 						<td colspan="6" class="total">TOTAL</td>
-						<td>{{ $sumas }}</td>	
+						<td> {{ $sumas }}</td>	
 					</tr>
 					<tr>
 						<th colspan="6">DESGROSE DE DEDUCTIVAS</th>
@@ -369,23 +364,23 @@
 					</tr>
 					<tr>
 						<td colspan="6">TOTAL</td>
-						<td>{{ $sumas }}</td>
+						<td></td>
 					</tr>
 					
 				</tbody>
 			</table>
 
-@foreach ($reportes as $reporte)
+
 		</main>
 		<div class="firma1">
 			<p>RECIBE</p><br><br>
 			<input type="text" value="">
-			<p>PRESTACIÓN DE SERVICIOS DE CONSTRUCCIÓN INFRAESTRUCTURA Y MANTENIMIENTO URBANO SA DE CV</p>
+			<p>Nombre de quien recibe</p>
 		</div>
 		<div class="firma2">
 			<p>SOLICITA</p> <br><br>
 			<input type="text" value="">
-			<p>ENLACE FINANCIERO ADMINISTRATIVO</p>
+			<p>Nombre de quien solicita</p>
 			<p class="minimi">
 				BAJO PROTESTA DE DECIR LA VERDAD MANIFIESTO QUE LA DOCUMENTACIÓN REPORTE QUE SE RELACIONA Y ANEXA, CUMPLE CON 
 				TODOS LOS REQUERIMIENTOS DE LA LEY Y LOS CALCULOS DE NUMEROS SON CORRECTOS ASI MISMO LOS TRABAJOS O MATERIALES
@@ -396,16 +391,36 @@
 		<div class="firma3">
 				<p>TRAMITO</p><br><br>
 				<input type="text" value="">
-				<p>PRESTACIÓN DE SERVICIOS DE CONSTRUCCIÓN INFRAESTRUCTURA Y MANTENIMIENTO URBANO SA DE CV</p>
+				<p>Nombre de quien tramito</p>
 			</div>
 		<footer>
 			<p style="float:right; color:black">Página 1 de 1</p>
 		</footer>
 	</body>
 </html>
-@endforeach
+
 <script type="text/javascript">
 	/* SUMAR CELDAS DE miTabla */
-	
+		/* Formato a numeros */
+    var formatNumber = {
+        separador: ",", // separador para los miles
+        sepDecimal: '.', // separador para los decimales
+        formatear:function (num){
+            num +='';
+            var splitStr = num.split('.');
+            var splitLeft = splitStr[0];
+            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+            var regx = /(\d+)(\d{3})/;
+            while (regx.test(splitLeft)) {
+                splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+            }
+            return this.simbol + splitLeft +splitRight;
+        },
+        new:function(num, simbol){
+            this.simbol = simbol ||'';
+            return this.formatear(num);
+        }
+    }
+    /* Fin */
     /* FIN */
 </script>

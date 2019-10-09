@@ -165,7 +165,7 @@ class ResponsableController extends Controller
                 $arr[] = [
                     'num_dependencia'   => $value->num_dependencia,
                     'dependencia'       => $value->dependencia,
-                    'num_unidad'         => $value->num_unidad,
+                    'num_unidad'        => $value->num_unidad,
                     'unidad'            => $value->unidad,
                     'num_proyecto'      => $value->num_proyecto,
                     'nombre'            => $value->nombre

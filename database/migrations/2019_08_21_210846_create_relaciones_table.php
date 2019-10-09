@@ -28,17 +28,21 @@ class CreateRelacionesTable extends Migration
         
             $table->foreign('user_id')->references('id')->on('users');
         });
+
         /* RELACIONES ENTRE REPORTE Y USUARIOS */
         Schema::table('reporte', function (Blueprint $table) {
             $table->unsignedBigInteger('beneficiario_id');
-            $table->unsignedBigInteger('partida_id');
             $table->unsignedBigInteger('responsable_id');
             $table->unsignedBigInteger('user_id');
-        
+            
             $table->foreign('beneficiario_id')->references('id')->on('beneficiario');
-            $table->foreign('partida_id')->references('id')->on('partida');
             $table->foreign('responsable_id')->references('id')->on('responsable');
             $table->foreign('user_id')->references('id')->on('users');
+        });
+        Schema::table('importes', function (Blueprint $table) {
+            $table->unsignedBigInteger('partida_id');
+            
+            $table->foreign('partida_id')->references('id')->on('partida');
         });
 
         /* INSERT A TRABLA USERS */
@@ -80,7 +84,7 @@ class CreateRelacionesTable extends Migration
             [
                 'codigo_p'       => '1110',
                 'nombre_p'       => 'DIETAS', 
-                'descripcion_p'  => 'Asignaciones para remuneraciones a los Diputados, Senadores, Asambleístas, Regidores y Síndicos.',
+                'descripcion_p'  => 'Asignaciones para remuneraciones a los Diputados',
                 'user_id'        => '1'
             ],
         ]);
@@ -111,32 +115,41 @@ class CreateRelacionesTable extends Migration
         /* INSERT A TRABLA RESPONSABLES */
         DB::table('responsable')->insert([
             [
-                'dependencia'   => 'Secretaria de Obras Publicas',
-                'unidad'        => 'Oficina del Secretario de Obras Publicas', 
-                'num_proyecto'  => '060001',
-                'nombre'        => 'Nombre del proyecto'
+                'num_dependencia' => '1',
+                'dependencia'     => 'Secretaria de Obras Publicas',
+                'num_unidad'      => '1',
+                'unidad'          => 'Oficina del Secretario de Obras Publicas', 
+                'num_proyecto'    => '060001',
+                'nombre'          => 'Nombre del proyecto'
             ],
         ]);
-        /* INSERT A TRABLA REPORTE */
+               
+        /* INSERT A TABLA REPORTE */
         DB::table('reporte')->insert([
             [
                 'num_folio'         => '000737', 
                 'codigo'            => '065LR737', 
                 'fecha'             => '2019-08-16 11:38:56', 
                 'periodo'           => 'JUNIO DEL 2019', 
-                'clasi_financiera'  => 'PROVEEDOR',
-                'importe'           => '11913.20', 
-                'importe_letra'     => 'ONCE MIL NUEVECIENTOS TRECE PESOS',
                 'concepto'          => 'PAGO A PROVEEDOR FACTURA 2100', 
-                'num_procedencia'   => '10', 
                 'nom_procedencia'   => 'Pagadora Ramo', 
                 'cuenta_bancaria'   => '70136245230 - Pagadora Ramo', 
                 'beneficiario_id'   => '1',
-                'partida_id'        => '1',
-                'responsable_id'    => '1', 
+                'responsable_id'    => '1',
                 'user_id'           => '1'
             ],
         ]);  
+
+        /* INSERT A TABLA IMPORTES */
+        DB::table('importes')->insert([
+            [
+                'importe'           => '11913.20', 
+                'importe_letra'     => 'ONCE MIL NUEVECIENTOS TRECE PESOS',
+                'num_folio'         => '000737', 
+                'partida_id'        => '1'
+            ],
+        ]);
+        
                 
     }
 

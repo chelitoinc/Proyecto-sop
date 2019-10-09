@@ -175,11 +175,11 @@ return [
                     'url'  => '/reportes',
                     'icon' => 'plus'
                 ],
-                [
+                /* [
                     'text'    => 'Plantillas',
                     'url'     => '/plantillas',
                     'icon'    => 'area-chart'
-                ],
+                ], */
             ],
         ],
     ],
