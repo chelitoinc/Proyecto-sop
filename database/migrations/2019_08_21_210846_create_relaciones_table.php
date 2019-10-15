@@ -132,6 +132,7 @@ class CreateRelacionesTable extends Migration
                 'fecha'             => '2019-08-16 11:38:56', 
                 'periodo'           => 'JUNIO DEL 2019', 
                 'concepto'          => 'PAGO A PROVEEDOR FACTURA 2100', 
+                'importe_total'     => '15000',
                 'nom_procedencia'   => 'Pagadora Ramo', 
                 'cuenta_bancaria'   => '70136245230 - Pagadora Ramo', 
                 'beneficiario_id'   => '1',

@@ -14,7 +14,7 @@ class CreatePartidaTable extends Migration
             $table->bigIncrements('id');
             $table->integer('codigo_p');
             $table->string('nombre_p');
-            $table->string('descripcion_p');
+            $table->longText('descripcion_p');
             $table->timestamps();
         });
     }

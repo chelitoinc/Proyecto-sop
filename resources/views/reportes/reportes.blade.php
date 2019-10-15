@@ -16,7 +16,7 @@
                 </button> 
             </div>
             
-            <div class="col-xs-3">
+            <div class="col-xs-3" id="seccionRecargar">
                 <p>Descargar reporte</p> 
                 <form method="post" id="form_pdf" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data" >
                     @csrf
@@ -31,6 +31,17 @@
                     <input type="submit" name="button-pdf" id="button-pdf" value="Descargar" class="btn btn-primary" >
                 </form> 
             </div>
+
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    setInterval(
+                            function(){
+                                $('#seccionRecargar').load();
+                            },1000
+                        );
+                });
+            </script>
+
             <!-- Tabla Reportes-->
             <hr class="col-xs-12">
             <div class="box-body">
@@ -59,45 +70,6 @@
         </div>
     </div>
 </div>
-{{-- Datatable Saldos --}}
-{{-- <div class="col-xs-6">
-    <div class="box box-default box-solid collapsed-box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Saldos Acumulados</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body" style="display: none;">
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-center">
-                        <div class="col-sm-12">
-                            <table id="table_saldos" class="table table-bordered table-hover dataTable" >
-                                <thead>
-                                    <tr role="row">
-                                        <th>ID</th>
-                                        <th>Numero de Folio</th>
-                                        <th>Codigo</th>
-                                        <th>Monto</th> 
-                                        <th>Fecha</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="3" style="text-align:right">Total </th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </div>
-</div> --}}
 
 <!-- Formulario Modal -->
 <div id="formModal" class="modal fade" role="dialog">
@@ -170,41 +142,26 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>
-                                                <select name="partida_id[]" id="partida_id" class="form-control">
+                                            <td style="width:100px;">
+                                                <select name="partida_id[]" id="partida_id" class="form-control" required>
                                                     <option></option>
                                                     @foreach ($crasificados as $crasificado)
-                                                    <option value="{{ $crasificado->id }}">{{ $crasificado->codigo_p }}</option>
+                                                    <option value="{{ $crasificado->id }}" >{{ $crasificado->codigo_p }}</option>
                                                     @endforeach
                                                 </select>
                                             </td> 
-                                            <td><input type='text' name='importe[]'></td> 
+                                            <td><input type='text' name='importe[]' required class="form-control"></td> 
                                             <td><input type='button' class='del' value='Eliminar Fila' class='btn btn-danger'></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div> 
-                            {{-- <div class="col-xs-6">
-                                <br>
-                                <select name="partida_id" id="partida_id" class="form-control" >
-                                    <option></option>
-                                    @foreach ($crasificados as $crasificado)
-                                    <option value="{{ $crasificado->id }}">{{ $crasificado->codigo_p }}</option>
-                                    @endforeach
-                                </select>                                 
-                            </div>
-                            <div class="col-xs-6">
-                                <br>
-                                <div class="input-group"> 
-                                    <span class="input-group-addon">$</span> <input name="importe" id="importe" class="form-control" type="text"> 
-                                </div>
-                            </div>  --}}
-
+                            
                             <div class="col-xs-12">
                                 <br>
                                 <input type="hidden" name="action" id="action" />
                                 <input type="hidden" name="hidden_id" id="hidden_id" />
-                                <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Agregar" />
+                                <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Guardar" />
                             </div>
                         </div>
                     </div>
@@ -264,8 +221,8 @@
 		 */
 		$("#add").click(function(){
 			var nuevaFila="<tr> \
-				<td><select name='partida_id[]' id='partida_id' class='form-control'><option>Selecciona ...</option>@foreach ($crasificados as $crasificado)<option value='{{ $crasificado->id }}''>{{ $crasificado->codigo_p }}</option>@endforeach</select></td> \
-				<td><input type='text' name='importe[]'></td> \
+				<td><select name='partida_id[]' id='partida_id' required class='form-control'><option>Selecciona ...</option>@foreach ($crasificados as $crasificado)<option value='{{ $crasificado->id }}''>{{ $crasificado->codigo_p }}</option>@endforeach</select></td> \
+				<td><input type='text' name='importe[]' required class='form-control'></td> \
 				<td><input type='button' class='del' value='Eliminar Fila' class='btn btn-danger'></td> \
 			</tr>";
 			$("#tabla tbody").append(nuevaFila);
@@ -436,8 +393,8 @@
         $('#create_button').click(function(){
             $('#sample_form')[0].reset();
             $('.modal-title').text("Nuevo Reporte");
-            $('#action_button').val("Agregar");
-            $('#action').val("Agregar");
+            $('#action_button').val("Guardar");
+            $('#action').val("Guardar");
             $('#formModal').modal('show');
         });/* Fin Script */
 
@@ -445,7 +402,7 @@
         $('#sample_form').on('submit', function(event){
             event.preventDefault();
 
-            if($('#action_button').val() == 'Agregar'){
+            if($('#action_button').val() == 'Guardar'){
                 $.ajax({
                     url:"{{route('reportes.store')}}",
                     method:"POST",
@@ -475,7 +432,8 @@
                         }
                         $('#form_result').html(html);
                     }
-                })
+                });
+                $( "#seccionRecargar" ).load();
             }
 
             if($('#action').val() == "Editar"){

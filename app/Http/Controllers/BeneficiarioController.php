@@ -157,4 +157,7 @@ class BeneficiarioController extends Controller{
         $data = Beneficiario::findOrFail($id);
         $data->delete(); 
     }
+
+
+
 }

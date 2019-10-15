@@ -42,14 +42,10 @@ class ReporteController extends Controller
             return datatables()->of($reportes)
                 ->addColumn('action', function ($data) {
                     $button = '<a style="cursor:pointer"
-                    name="edit" id="' . $data->id . '"
-                    class="edit 
-                    "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<a style="cursor:pointer"
                     name="delete" id="' . $data->id . '"
-                    class="delete 
+                    class="delete btn btn-block btn-danger
                     "><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
+                    $button .= '&nbsp;&nbsp;';
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -82,8 +78,7 @@ class ReporteController extends Controller
             'cuenta_bancaria'   => 'required|string',
             'beneficiario_id'   => 'required|integer',
             'responsable_id'    => 'required|string',
-            'importe'           => 'required',
-            'partida_id'        => 'required'
+            'importe'           => 'required'
         );
 
 
@@ -244,12 +239,12 @@ class ReporteController extends Controller
         $sumas = Importe::query('importes')
         ->whereIn('num_folio', $folio)
         ->sum('importe');
-        $cifraLetras = strtoupper(NumerosEnLetras::convertir($sumas,'Pesos',false,'Centavos'));
+        $cifraLetras = strtoupper(NumerosEnLetras::convertir($sumas,'M.M',true));
 
         $pdf = PDF::loadView('plantillas.plantilla', [
             'reportes'      => $reportes,
             'tables'        => $tables,
-            'sumas'         => $sumas,
+            'sumas'         => number_format($sumas, 2),
             'cifraLetras'   => $cifraLetras 
         ]); 
 

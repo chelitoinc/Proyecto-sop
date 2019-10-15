@@ -26,6 +26,7 @@
     </div>
     @endif
 </div>
+
 <div class="col-md-12">
     <div class="box box-default box-solid collapsed-box">
         <div class="box-header with-border">
@@ -35,9 +36,9 @@
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                 </button>
             </div>
-            <!-- /.box-tools -->
+            
         </div>
-        <!-- /.box-header -->
+        
         <div class="box-body" style="display: none;">
             <div class="card">
                 <div class="card-body">
@@ -56,6 +57,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

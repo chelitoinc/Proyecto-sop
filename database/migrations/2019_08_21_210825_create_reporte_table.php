@@ -18,6 +18,7 @@ class CreateReporteTable extends Migration
             $table->date('fecha');
             $table->string('periodo');
             $table->string('concepto');
+            $table->decimal('importe_total',12,2); // Se agrego esta linea
             $table->string('nom_procedencia');
             $table->string('cuenta_bancaria');
             $table->timestamps();

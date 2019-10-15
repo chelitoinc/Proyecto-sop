@@ -27,7 +27,7 @@
 
 				body {
 					position: relative;
-					margin: 0 auto;
+					padding: 5px;
 					font-family: Arial, Helvetica, sans-serif;
 					font-size: 10px;
 				}
@@ -132,22 +132,26 @@
 				}
 
 
-				/* TABLA */
+				/* Bloques div*/
 
 				.border {
-					margin: 0;
-					padding: 0;
+					margin: 5px;
+					padding: 5px;
 					height: 60px;
 					border: 1px solid #000;
 					text-align:justify;
 				}
 
 				.border1 {
+					margin: 5px;
+					padding: 5px;
 					height: 173px;
 					border: 1px solid #000;
 				}
 
 				.border2 {
+					margin: 5px;
+					padding: 5px;
 					height: 85px;
 					border: 1px solid #000;
 				}
@@ -194,6 +198,8 @@
 
 				#project {
 					float: left;
+					margin: 5px;
+					padding: 5px;
 				}
 
 				#project span {
@@ -294,7 +300,7 @@
 
 
 				<div>RECIBI DEL GOBIERNO DEL ESTADO DE MORELOS LA CANTIDAD DE: $<span class="importe">{{ $sumas }} </span></div>
-				<div><input type="text" value="({{ $cifraLetras }})" class="importeletra"></div>
+				<div><input type="text" value="{{ $cifraLetras }} " class="importeletra"></div>
 			</div><br>
 
 				
@@ -345,13 +351,13 @@
 						 
 					@foreach ($tables as $table)
 					<tr>
-						<td>{{ $table->num_dependencia }}</td>
-						<td>{{ $table->num_unidad }}</td>
-						<td>{{ $table->num_proyecto }} </td>
+						<td>0{{ $table->num_dependencia }}</td>
+						<td>0{{ $table->num_unidad }}</td>
+						<td>0{{ $table->num_proyecto }} </td>
 						<td>{{ $table->codigo_p }}</td>
 						<td>{{ $table->descripcion_p }}</td>
 						<td></td>
-						<td>{{ $table->importe }}</td>
+						<td>{{ number_format($table->importe,2) }}</td>
 					</tr>
 					@endforeach
 					<tr>
