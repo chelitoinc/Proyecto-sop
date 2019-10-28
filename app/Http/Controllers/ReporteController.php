@@ -21,8 +21,6 @@ class ReporteController extends Controller
     public function index()
     {
        
-        $importes = Importe::query('importes')->where('num_folio', '=', 737)->sum('importe');
-
         $partidas = Partida::orderBy('id','DESC')->get();
 
         $folios = Reporte::orderBY('id','ASC')->distinct()->get();
@@ -41,11 +39,11 @@ class ReporteController extends Controller
         if (request()->ajax()) {
             return datatables()->of($reportes)
                 ->addColumn('action', function ($data) {
-                    $button = '<a style="cursor:pointer"
-                    name="delete" id="' . $data->id . '"
-                    class="delete btn btn-block btn-danger
-                    "><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
+                    $button = '<a style="cursor:pointer"name="edit" id="' . $data->id . '"
+                    class="edit btn btn-success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ';
                     $button .= '&nbsp;&nbsp;';
+                    $button .= '<a style="cursor:pointer" name="delete" id="' . $data->id . '"
+                    class="delete btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -77,8 +75,8 @@ class ReporteController extends Controller
             'nom_procedencia'   => 'required|string',
             'cuenta_bancaria'   => 'required|string',
             'beneficiario_id'   => 'required|integer',
-            'responsable_id'    => 'required|string',
-            'importe'           => 'required'
+            'responsable_id'    => 'required|string'/* ,
+            'importe'           => 'required' */
         );
 
 
@@ -128,24 +126,32 @@ class ReporteController extends Controller
         );
     }
 
-    public function show($id)
+    public function show($id)//parametro $id
     {
-        //
+        $partidas = Partida::orderBy('id','DESC')->get();
+        
+        $importes = Importe::query('importes')->where('num_folio', '=', 7890)->get();
+
+        return view('reportes.editar', [
+            'importes' => $importes,
+            'partidas' => $partidas
+        ]);
     }
 
-    public function edit($id)
-    {
+    public function edit($id){
+
         if (request()->ajax()) {
+            
             $data = Reporte::findOrFail($id);
             return response()->json(['data' => $data]);
         }
+
     }
 
     public function update(Request $request)
     {
         $user = \Auth::user();
         $id = $user->id;
-        //$importe_letra = NumerosEnLetras::convertir($request->importe,'Pesos',false,'Centavos');
 
         $rules = array(
             'num_folio'         => 'required|integer',
@@ -156,9 +162,7 @@ class ReporteController extends Controller
             'nom_procedencia'   => 'required|string',
             'cuenta_bancaria'   => 'required|string',
             'beneficiario_id'   => 'required|integer',
-            'responsable_id'    => 'required|string',
-            'importe'           => 'required',
-            'partida_id'        => 'required|integer'
+            'responsable_id'    => 'required|string'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -172,22 +176,46 @@ class ReporteController extends Controller
             'codigo'            => strtoupper($request->codigo),
             'fecha'             => $request->fecha,
             'periodo'           => strtoupper($request->periodo),
-            /* 'clasi_financiera'  => strtoupper($request->clasi_financiera),
-            'importe'           => $request->importe,
-            'importe_letra'     => strtoupper($importe_letra), */
             'concepto'          => strtoupper($request->concepto),
-            /* 'num_procedencia'   => $request->num_procedencia, */
             'nom_procedencia'   => strtoupper($request->nom_procedencia),
             'cuenta_bancaria'   => strtoupper($request->cuenta_bancaria),
             'beneficiario_id'   => $request->beneficiario_id,
-            /* 'partida_id'        => $request->partida_id, */
             'responsable_id'    => $request->responsable_id,
             'user_id'           => $id
         );
 
-        Reporte::whereId($request->hidden_id)->update($form_data);
+        Reporte::whereId($request->hidden_id)->update($form_folios);
 
         return response()->json(['success' => 'Reporte actualizado correctamente.']);
+
+    }
+
+    public function updateImporte(Request $request){
+
+        $total = 0;
+
+        if($request->partida_id){
+            $importe = $request->partida_id;
+            foreach ($importe as $key => $value) {
+                $numero = new Importe();
+                $numero->importe       =  $request->importe[$key];
+                $numero->importe_letra =  strtoupper(NumerosEnLetras::convertir($request->importe[$key],'Pesos',false,'Centavos'));
+                //$numero->partida_id    =  $request->partida_id[$key];
+                $numero->update();
+            }
+            foreach ($importe as $key => $value) {
+                $total +=  $request->importe[$key];
+            }
+        }
+
+        $form_folios = array(
+            'importe_total'     => $total
+        );
+        $id = Reporte::query('reporte')->where('num_folio',$request->num_folio)->select('id')->get();
+
+        Reporte::whereId(4)->update($form_folios);
+
+        return back()->with('success', 'Datos actualizados correctamente.'.$total);
 
     }
 
@@ -198,7 +226,7 @@ class ReporteController extends Controller
 
     public function exportpdf(Request $request){
 
-        $id = $request->folio;
+        $folio = $request->folio;
 
         $reportes = Reporte::query('reporte')
             ->join('beneficiario', 'reporte.beneficiario_id', '=', 'beneficiario.id')
@@ -214,12 +242,12 @@ class ReporteController extends Controller
                                 'responsable.num_dependencia',
                                 'responsable.num_unidad'
                     )
-            ->where('reporte.id',$id)
+            ->where('reporte.num_folio',$folio)
             ->orderBy('id', 'ASC')
             ->get();
 
             /* sacando folio  */
-            $folio = Reporte::query('reporte')->where('id',$id)->select('num_folio')->get();
+            //$folio = Reporte::query('reporte')->where('num_folio',$id)->select('num_folio')->get();
             //$folio2 = Importe::query('importes')->where('num_folio',$folio)->get();
 
             $tables = Importe::query('importes')
@@ -231,13 +259,13 @@ class ReporteController extends Controller
                                    'responsable.num_unidad',
                                    'responsable.num_dependencia',
                                    'responsable.num_proyecto')
-            ->whereIn('importes.num_folio',$folio)
+            ->where('importes.num_folio',$folio)
             ->get();
 
 
         /* SELECT SUM(importe) from reporte; */
         $sumas = Importe::query('importes')
-        ->whereIn('num_folio', $folio)
+        ->where('num_folio', $folio)
         ->sum('importe');
         $cifraLetras = strtoupper(NumerosEnLetras::convertir($sumas,'M.M',true));
 

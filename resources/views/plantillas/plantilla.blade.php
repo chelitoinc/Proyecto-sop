@@ -327,10 +327,10 @@
 			<div class="border2">
 				<center><p><strong>RESPONSABLE DEL TRÁMITE</strong></p></center>	
 				<div>	
-					DEPENDENCIA: <input type="text" value="{{ $reporte->num_dependencia }} {{ $reporte->dependencia }}" class="dependencia"> 
+					DEPENDENCIA: <input type="text" value="0{{ $reporte->num_dependencia }} {{ $reporte->dependencia }}" class="dependencia"> 
 				</div>
 				<div>	
-					UNIDAD: <input type="text" value="{{ $reporte->num_unidad }} {{ $reporte->unidad }}" class="unidad">
+					UNIDAD: <input type="text" value="0{{ $reporte->num_unidad }} {{ $reporte->unidad }}" class="unidad">
 				</div>
 			</div><br>
 @endforeach
@@ -357,12 +357,12 @@
 						<td>{{ $table->codigo_p }}</td>
 						<td>{{ $table->descripcion_p }}</td>
 						<td></td>
-						<td>{{ number_format($table->importe,2) }}</td>
+						<td>${{ number_format($table->importe,2) }}</td>
 					</tr>
 					@endforeach
 					<tr>
 						<td colspan="6" class="total">TOTAL</td>
-						<td> {{ $sumas }}</td>	
+						<td> ${{ $sumas }}</td>	
 					</tr>
 					<tr>
 						<th colspan="6">DESGROSE DE DEDUCTIVAS</th>

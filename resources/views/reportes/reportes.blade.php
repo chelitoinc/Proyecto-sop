@@ -20,27 +20,12 @@
                 <p>Descargar reporte</p> 
                 <form method="post" id="form_pdf" action="{{ route('reportes.pdf') }}"   enctype="multipart/form-data" >
                     @csrf
-                    <select name="folio" id="id_folio" class="js-data-example-ajax">
-                        <option></option>
-                        @foreach ($folios as $reporte)
-                            <option value="{{ $reporte->id }}" required>{{ $reporte->num_folio }}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" name="folio" class="form-control" placeholder="Numero de folio" focus>
                     <input type="text" name="num_folio" hidden>
                     <div class="clearfix">.</div>
                     <input type="submit" name="button-pdf" id="button-pdf" value="Descargar" class="btn btn-primary" >
                 </form> 
             </div>
-
-            <script type="text/javascript">
-                $(document).ready(function(){
-                    setInterval(
-                            function(){
-                                $('#seccionRecargar').load();
-                            },1000
-                        );
-                });
-            </script>
 
             <!-- Tabla Reportes-->
             <hr class="col-xs-12">
@@ -132,6 +117,7 @@
                                 <textarea name="concepto" id="concepto" class="form-control" rows="2" placeholder="Observaciones ..." ></textarea>
                             </div>
                             <div class="col-xs-12">
+                                <a href="{{ route('reportes.editar',2) }}" class="btn btn-success" name="editMas" id="editMas">Modificar</a>
                                 <table id="tabla" class="table table-bordered table-hover dataTable">
                                     <thead>
                                         <tr class="bg bg-gray">
@@ -143,15 +129,15 @@
                                     <tbody>
                                         <tr>
                                             <td style="width:100px;">
-                                                <select name="partida_id[]" id="partida_id" class="form-control" required>
+                                                <select name="partida_id[]" id="partida_id" class="form-control" >
                                                     <option></option>
                                                     @foreach ($crasificados as $crasificado)
                                                     <option value="{{ $crasificado->id }}" >{{ $crasificado->codigo_p }}</option>
                                                     @endforeach
                                                 </select>
                                             </td> 
-                                            <td><input type='text' name='importe[]' required class="form-control"></td> 
-                                            <td><input type='button' class='del' value='Eliminar Fila' class='btn btn-danger'></td>
+                                            <td><input type='text' name='importe[]' id="importe"  class="form-control"></td> 
+                                            <td><input type='button' class='del btn btn-danger' value='Eliminar Fila' ></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -192,26 +178,6 @@
 </div>
 <!-- Modal Fin -->
 
-{{-- Modal Descargar pdf --}}
-<div id="pdfModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg bg-blue">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Descargar Reporte</h4>
-                </div>
-                <div class="modal-body">
-                    <h4 align="center" style="margin:0;">Descargar este reporte?</h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" name="ok_button_pdf" id="ok_button_pdf" class="btn btn-danger">Descargar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-{{-- Modal Final --}}
-
 <script type="text/javascript">
 
     /* Add column with */
@@ -223,7 +189,7 @@
 			var nuevaFila="<tr> \
 				<td><select name='partida_id[]' id='partida_id' required class='form-control'><option>Selecciona ...</option>@foreach ($crasificados as $crasificado)<option value='{{ $crasificado->id }}''>{{ $crasificado->codigo_p }}</option>@endforeach</select></td> \
 				<td><input type='text' name='importe[]' required class='form-control'></td> \
-				<td><input type='button' class='del' value='Eliminar Fila' class='btn btn-danger'></td> \
+				<td><input type='button' class='del btn btn-danger' value='Eliminar Fila' class='btn btn-danger'></td> \
 			</tr>";
 			$("#tabla tbody").append(nuevaFila);
 		});
@@ -395,6 +361,10 @@
             $('.modal-title').text("Nuevo Reporte");
             $('#action_button').val("Guardar");
             $('#action').val("Guardar");
+            $('#tabla').show();
+            $('#editMas').hide();
+            $('#importe').prop("required", true);
+            $('#partida_id').prop("required", true);
             $('#formModal').modal('show');
         });/* Fin Script */
 
@@ -464,12 +434,20 @@
                     }
                 });
             }
+        });/* Fin Script */ 
+
+        //Precionando editMas
+        $(document).on('click', '#editMas', function(){
+                     
+            //Aqui iria la direccion con el id del reporte 
+            
         });/* Fin Script */
 
         /* Edit  */
         $(document).on('click', '.edit', function(){
             var id = $(this).attr('id');
             $('#form_result').html('');
+            
             $.ajax({
                 url:"reportes/"+id+"/edit",
                 dataType:"json",
@@ -483,14 +461,17 @@
                     $('#cuenta_bancaria').val(html.data.cuenta_bancaria);
                     $('#responsable_id').val(html.data.responsable_id);
                     $('#beneficiario_id').val(html.data.beneficiario_id);
-                    
                     $('#hidden_id').val(html.data.id);
                     $('.modal-title').text("Editar Reporte");
                     $('#action_button').val("Editar");
                     $('#action').val("Editar");
+                    //Otros Parametros
+                    $('#tabla').show(); //oculto mediante id
+                    $('#editMas').show();
                     $('#formModal').modal('show');
                 }
             })
+            
         });/* Fin Script */
 
         var user_id;

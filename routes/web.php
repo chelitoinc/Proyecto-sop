@@ -45,7 +45,9 @@ Route::get('reportes/destroy/{id}', 'ReporteController@destroy');
 // Ruta para descargar los reportes pidiedo el folio del reporte
 Route::post('reportes/pdf', 'ReporteController@exportpdf')->name('reportes.pdf');
 
-//Route::get('reportes/pdf/{id}', 'ReporteController@exportpdf');
+Route::get('reportes/editar/{id}', 'ReporteController@show')->name('reportes.editar');
+
+Route::post('reportes/editar/', 'ReporteController@updateImporte')->name('reportes.editar');
 
 
 
