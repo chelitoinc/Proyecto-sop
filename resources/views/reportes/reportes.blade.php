@@ -117,7 +117,7 @@
                                 <textarea name="concepto" id="concepto" class="form-control" rows="2" placeholder="Observaciones ..." ></textarea>
                             </div>
                             <div class="col-xs-12">
-                                <a href="{{ route('reportes.editar',2) }}" class="btn btn-success" name="editMas" id="editMas">Modificar</a>
+                                
                                 <table id="tabla" class="table table-bordered table-hover dataTable">
                                     <thead>
                                         <tr class="bg bg-gray">
@@ -152,6 +152,11 @@
                         </div>
                     </div>
                 </form>
+                <br>
+                                <form action="{{route('reportes.editar')}}">
+                                    <input type="text" placeholder="Confirmar folio" name="numeroFolio">
+                                    <input type="submit" value="OK">
+                                </form>
             </div>
         </div>
     </div>
@@ -466,7 +471,7 @@
                     $('#action_button').val("Editar");
                     $('#action').val("Editar");
                     //Otros Parametros
-                    $('#tabla').show(); //oculto mediante id
+                    $('#tabla').hide(); //oculto mediante id
                     $('#editMas').show();
                     $('#formModal').modal('show');
                 }

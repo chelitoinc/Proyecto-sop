@@ -126,11 +126,11 @@ class ReporteController extends Controller
         );
     }
 
-    public function show($id)//parametro $id
+    public function show(Request $request)//parametro $id
     {
         $partidas = Partida::orderBy('id','DESC')->get();
         
-        $importes = Importe::query('importes')->where('num_folio', '=', 7890)->get();
+        $importes = Importe::query('importes')->where('num_folio', '=', $request->numeroFolio)->get();
 
         return view('reportes.editar', [
             'importes' => $importes,
