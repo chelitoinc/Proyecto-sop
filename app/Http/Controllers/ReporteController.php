@@ -212,10 +212,10 @@ class ReporteController extends Controller
             'importe_total'     => $total
         );
         $id = Reporte::query('reporte')->where('num_folio',$request->num_folio)->select('id')->get();
+        
+        Reporte::where('num_folio','=',$request->num_folio)->update($form_folios);
 
-        Reporte::whereId(4)->update($form_folios);
-
-        return back()->with('success', 'Datos actualizados correctamente.'.$total);
+        return back()->with('success', 'Datos actualizados correctamente.'.$id);
 
     }
 

@@ -33,7 +33,11 @@
                                                 </select>
                                             </th>
                                             <th>
-                                                <input type="text" name="importe[]" value="{{$importe->importe}}" class="form-control">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="text" class="form-control" name="importe[]" value="{{number_format($importe->importe)}}">
+                                            <span class="input-group-addon">.00</span>
+                                        </div>
                                             </th>
                                         </tr>
                                         <input type="hidden" name="num_folio" value="{{$importe->num_folio}}">
