@@ -14,8 +14,8 @@
                 <div class="box box-primary">
                     <div class="box-body box-profile">
                         
-                        <img class="profile-user-img img-responsive img-circle" src="{{asset('img/foto.png')}}" id="avatarImage" >
-
+                        <!-- <img class="profile-user-img img-responsive img-circle" src="{{asset('img/foto.png')}}" id="avatarImage" > -->
+                        <b>Usuario</b>
                         <h3 class="profile-username text-center">{{ Auth::user()->nick }}</h3>
 
                         <ul class="list-group list-group-unbordered">
@@ -28,14 +28,6 @@
                             </li>
                             <li class="list-group-item">
                                 <b>Numero de Empleado</b> <a class="pull-right">{{ Auth::user()->num_empleado }}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <form method="POST" action="#" enctype="multipart/form-data" aria-label="Configuración de mi cuenta" id="avatarForm" >
-                                    @csrf
-                                    <input type="file" id="avatarInput" name="photo">
-                                    <hr>
-                                    <input type="submit" value="Cambiar fotografia de perfil" class="btn btn-primary btn-block"> 
-                                </form>
                             </li>
                         </ul>
                     </div>

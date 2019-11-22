@@ -167,7 +167,7 @@ return [
             ],
         ],
         [
-            'text'    => 'Tramite',
+            'text'    => 'Trámite',
             'icon'    => 'table',
             'submenu' => [
                 [

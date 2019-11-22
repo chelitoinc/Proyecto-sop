@@ -58,7 +58,7 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                         <a href="{{url('configuracion')}}" class="dropdown-toggle"  aria-expanded="false">
-                            <img src="{{asset('img/foto.png')}}" class="user-image" alt="User Image">
+                            <!-- <img src="{{asset('img/foto.png')}}" class="user-image" alt="User Image"> -->
                             <span class="hidden-xs">{{Auth::user()->name }} {{Auth::user()->surname }}</span>
                             </a>
                         </li>

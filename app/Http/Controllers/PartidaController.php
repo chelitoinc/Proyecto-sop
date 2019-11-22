@@ -26,9 +26,6 @@ class PartidaController extends Controller
                     $button .= '&nbsp;&nbsp;';
                     $button .= '<a style="cursor:pointer"name="delete" id="' . $data->id . '"
                     class="delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a> ';
-                    $button .= '&nbsp;&nbsp;&nbsp;';
-                    $button .= '<a style="cursor:pointer"name="change" id="' . $data->id . '"
-                    class="change"><i class="fa fa-exchange" aria-hidden="true"></i></a> ';
                     return $button;
                 })
                 ->rawColumns(['action'])

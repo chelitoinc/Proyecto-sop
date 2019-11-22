@@ -379,12 +379,12 @@
 
 		</main>
 		<div class="firma1">
-			<p>RECIBE</p><br><br>
+			<p>RECIBE</p><br>
 			<input type="text" value="">
 			<p>Nombre de quien recibe</p>
 		</div>
 		<div class="firma2">
-			<p>SOLICITA</p> <br><br>
+			<p>SOLICITA</p> <br>
 			<input type="text" value="">
 			<p>Nombre de quien solicita</p>
 			<p class="minimi">
@@ -393,7 +393,7 @@
 				QUE SE CONSUGAN HAN SIDO RECIBIDOS A NUETRA ENTERA SASTISFACCIÓN
 			</p>
 		</div>
-		<div class="clearfix">.. <br> </div>
+		<div class="clearfix"> </div>
 		<div class="firma3">
 				<p>TRAMITO</p><br><br>
 				<input type="text" value="">
